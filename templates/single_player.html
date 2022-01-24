@@ -315,3 +315,12 @@
         </div>
     </section>
 {% endblock %}
+
+{% block JS_Block %}
+    <script>
+        let bid_end = false
+        if(bid_end){
+            document.getElementById('bid').style.display = 'none'
+        }
+    </script>
+{% endblock %}

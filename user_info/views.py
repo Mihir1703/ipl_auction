@@ -37,7 +37,7 @@ def register_user(request):
         password1 = request.POST['password1']
         try:
             user = User.objects.create_user(
-                username=username, password=password1, email=email, first_name=fname)
+                username=username, password=password1, email=email, first_name=fname, last_name="")
             user.save()
             User_Data.objects.create(username=user).save()
             return redirect('/')
@@ -57,7 +57,9 @@ def index(request):
     data_all = Player.objects.filter(active=True).filter(type='All Rounder').order_by('-t20_ranking')[:3]
     in_auction = Player_Owner.objects.all()
     in_auction = Player.objects.filter(id__in=in_auction).filter(active=True)[:1]
+    print(request.user.get_full_name())
     return render(request, 'index.html', {
+        'username': request.user.get_full_name(),
         'Batsman': data_bat,
         'Bowler': data_bowl,
         'WicketKeeper': data_wc,
