@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="{% static './assets/css/owl.min.css' %} " />
     <link rel="stylesheet" href="{% static './assets/css/magnific-popup.css' %} " />
     <link rel="stylesheet" href="{% static './assets/css/flaticon.css' %} " />
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+      <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <link rel="stylesheet" href="{% static './assets/css/jquery-ui.min.css' %} " />
     <link rel="stylesheet" href="{% static './assets/css/main.css' %} " />
     <link href="https://fonts.googleapis.com/css2?family=Recursive&display=swap" rel="stylesheet">
@@ -118,7 +118,7 @@
                         <p>You can log in to your Auction account here.</p>
 
                     </div>
-                    <form class="login-form" method="POST" action="/user/login/">
+                    <form class="login-form" method="POST" action="/login/">
                     {% csrf_token %}
                         <div class="form-group mb-30">
                             <label for="login-email">
@@ -140,7 +140,7 @@
                     <div class="section-header mb-0">
                         <h3 class="title mt-0">NEW HERE?</h3>
                         <p>Sign up and create your Account</p>
-                        <a href="/user/signup" class="custom-button transparent">Sign Up</a>
+                        <a href="/signup" class="custom-button transparent">Sign Up</a>
                     </div>
                 </div>
             </div>
@@ -148,151 +148,7 @@
     </section>
     <!--============= Account Section Ends Here =============-->
 
-<!--============= Footer Section Starts Here =============-->
-<footer
-      class="bg_img padding-top oh"
-      data-background="{% static './assets/images/footer/footer-bg.jpg'%}"
-    >
-      <div class="footer-top-shape">
-        <img src="{% static './assets/css/img/footer-top-shape.png'%}" alt="css" />
-      </div>
-      <div class="anime-wrapper">
-        <div class="anime-1 plus-anime">
-          <img src="{% static './assets/images/footer/p1.png'%}" alt="footer" />
-        </div>
-        <div class="anime-2 plus-anime">
-          <img src="{% static './assets/images/footer/p2.png'%}" alt="footer" />
-        </div>
-        <div class="anime-3 plus-anime">
-          <img src="{% static './assets/images/footer/p3.png'%}" alt="footer" />
-        </div>
-        <div class="anime-5 zigzag">
-          <img src="{% static './assets/images/footer/c2.png'%}" alt="footer" />
-        </div>
-        <div class="anime-6 zigzag">
-          <img src="{% static './assets/images/footer/c3.png'%}" alt="footer" />
-        </div>
-        <div class="anime-7 zigzag">
-          <img src="{% static './assets/images/footer/c4.png'%}" alt="footer" />
-        </div>
-      </div>
-      <div class="newslater-wrapper">
-        <div class="container">
-          <div class="newslater-area">
-            <div class="newslater-thumb">
-              <img src="https://esummit.ecellnitb.com/assets/img/logo/E-SUMMIT%20LOGO-min.png" alt="footer" width="350px"/>
-            </div>
-            <div class="newslater-content">
-              <div class="section-header left-style mb-low">
-                <h5 class="cate">Subscribe to E-Cell MANIT</h5>
-                <h3 class="title">
-                  To Get Notification regarding Upcoming Events
-                </h3>
-              </div>
-              <form class="subscribe-form">
-                <input
-                  type="text"
-                  placeholder="Enter Your Email"
-                  name="email"
-                />
-                <button type="submit" class="custom-button">Subscribe</button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="footer-top padding-bottom padding-top">
-        <div class="container">
-          <div class="row mb--60">
-            <div class="col-sm-6 col-lg-3">
-              <div class="footer-widget widget-links">
-                <h5 class="title">We're Here to Help</h5>
-                <ul class="links-list">
-                  <li>
-                    <a href="https://www.ecellnitb.com/e_summit_2021/ipl.html">Rules</a>
-                  </li>
-                  <li>
-                    <a href="https://www.ecellnitb.com/e_summit_2021/ipl.html">Contact Us</a>
-                  </li>
-                  <li>
-                    <a href="https://www.ecellnitb.com/e_summit_2021/ipl.html">Help & FAQ</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class="col-sm-6 col-lg-3">
-              <div class="footer-widget widget-follow">
-                <h5 class="title">Follow Us</h5>
-                <ul class="links-list">
-                  <li>
-                    <a href="#0"
-                      ><i class="fas fa-phone-alt"></i>(91) 8209940374</a>
-                  </li>
-                  <li>
-                    <a href="#0"
-                      ><i class="fas fa-blender-phone"></i>(91) 8957946660</a>
-                  </li>
-                  <li>
-                    <a href="#0"
-                      ><i class="fas fa-envelope-open-text"></i
-                      >aadisngh03@gmail.com</a
-                    >
-                  </li>
-                  <li>
-                    <a href="http://manit.ac.in"
-                      ><i class="fas fa-location-arrow"></i>MANIT
-                      BHOPAL</a
-                    >
-                  </li>
-                </ul>
-                <ul class="social-icons">
-                  <li>
-                    <a href="https://www.facebook.com/ecellnitbhopal/" class="active"
-                      ><i class="fab fa-facebook-f"></i
-                    ></a>
-                  </li>
-                  <li>
-                    <a href="https://twitter.com/ecell_nitb"><i class="fab fa-twitter"></i></a>
-                  </li>
-                  <li>
-                    <a href="https://www.instagram.com/ecell_nitb"><i class="fab fa-instagram"></i></a>
-                  </li>
-                  <li>
-                    <a href="https://in.linkedin.com/company/ecell-manit"><i class="fab fa-linkedin-in"></i></a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <div class="container">
-          <div class="copyright-area">
-            <div class="footer-bottom-wrapper">
-              <div class="logo">
-                <a href="https://esummit.ecellnitb.com/"
-                  ><img
-                    src="https://esummit.ecellnitb.com/assets/img/logo/E-SUMMIT%20LOGO-min.png"
-                    alt="logo"
-                    height="200px"
-                /></a>
-              </div>
-              <ul class="gateway-area">
-                <li>
-                  <p style="color: white;">
-                    &copy; Copyright 2020 <a href="https://ecellnitb.com/" style="color: black;">E-CELL MANIT</a> BY
-                    <a style="color: black;" href="#0">Mihir Waykole</a>&
-                    <a style="color: black;" href="#0">Nilesh</a>
-                  </p>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-    </div>
-  </footer>
-    <!--============= Footer Section Ends Here =============-->
+<!--============= Footer Section Starts Here =============--><!--============= Footer Section Ends Here =============-->
     <!-- =============== VENOBOX =============== -->
     <script>
         function pass_show() {

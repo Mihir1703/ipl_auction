@@ -1,356 +1,212 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
 
-    {% load static %}
-    <!DOCTYPE html>
-    <html lang="en">
-      <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    
-        <title>IPL E-Cell</title>
-    
-        <link rel="stylesheet" href="{% static './assets/css/bootstrap.min.css' %}  " />
-        <link rel="stylesheet" href="{% static './assets/css/all.min.css' %}" />
-        <link rel="stylesheet" href="{% static './assets/css/animate.css' %} " />
-        <link rel="stylesheet" href="{% static './assets/css/nice-select.css' %} " />
-        <link rel="stylesheet" href="{% static './assets/css/owl.min.css' %} " />
-        <link rel="stylesheet" href="{% static './assets/css/magnific-popup.css' %} " />
-        <link rel="stylesheet" href="{% static './assets/css/flaticon.css' %} " />
-        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <link rel="stylesheet" href="{% static './assets/css/jquery-ui.min.css' %} " />
-        <link rel="stylesheet" href="{% static './assets/css/main.css' %} " />
-        <link href="https://fonts.googleapis.com/css2?family=Recursive&display=swap" rel="stylesheet">
-        <link
-          rel="shortcut icon"
-          href="{% static 'assets/images/favicon.png' %} "
-          type="image/x-icon"
-        />
-        
-      </head>
-    
-      <style>
-          body{
-            font-family: 'Recursive', sans-serif;
-          }
-      </style>
-      {% if user.is_authenticated %}
-        <meta http-equiv="REFRESH" content="0;url=/">
-      {% endif %} 
-      <body>
-        <!--============= ScrollToTop Section Starts Here =============-->
-        <div class="overlayer" id="overlayer">
-          <div class="loader">
-            <div class="loader-inner"></div>
-          </div>
-        </div>
-        <a href="#0" class="scrollToTop"><i class="fas fa-angle-up"></i></a>
-        <div class="overlay"></div>
-        <!--============= ScrollToTop Section Ends Here =============-->
-    
-        <!--============= Header Section Starts Here =============-->
-        <header>
-          <div class="header-bottom">
-            <div class="container">
-              <div class="header-wrapper">
+    <title>IPL E-Cell</title>
+
+    <link rel="stylesheet" href="{% static './assets/css/bootstrap.min.css' %}  "/>
+    <link rel="stylesheet" href="{% static './assets/css/all.min.css' %}"/>
+    <link rel="stylesheet" href="{% static './assets/css/animate.css' %} "/>
+    <link rel="stylesheet" href="{% static './assets/css/nice-select.css' %} "/>
+    <link rel="stylesheet" href="{% static './assets/css/owl.min.css' %} "/>
+    <link rel="stylesheet" href="{% static './assets/css/magnific-popup.css' %} "/>
+    <link rel="stylesheet" href="{% static './assets/css/flaticon.css' %} "/>
+    <link rel="stylesheet" href="{% static './assets/css/jquery-ui.min.css' %} "/>
+    <link rel="stylesheet" href="{% static './assets/css/main.css' %} "/>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive&display=swap" rel="stylesheet">
+    <link
+            rel="shortcut icon"
+            href="{% static 'assets/images/favicon.png' %} "
+            type="image/x-icon"
+    />
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+</head>
+
+<style>
+    body {
+        font-family: 'Recursive', sans-serif;
+    }
+</style>
+{% if user.is_authenticated %}
+    <meta http-equiv="REFRESH" content="0;url=/">
+{% endif %}
+<body>
+<!--============= ScrollToTop Section Starts Here =============-->
+<div class="overlayer" id="overlayer">
+    <div class="loader">
+        <div class="loader-inner"></div>
+    </div>
+</div>
+<a href="#0" class="scrollToTop"><i class="fas fa-angle-up"></i></a>
+<div class="overlay"></div>
+<!--============= ScrollToTop Section Ends Here =============-->
+
+<!--============= Header Section Starts Here =============-->
+<header>
+    <div class="header-bottom">
+        <div class="container">
+            <div class="header-wrapper">
                 <div class="logo">
-                  <a href="./index.html">
-                    <img
-                      src="https://esummit.ecellnitb.com/assets/img/logo/E-SUMMIT%20LOGO-min.png"
-                      alt="logo"
-                      height=""
-                    />
-                  </a>
+                    <a href="./index.html">
+                        <img
+                                src="https://esummit.ecellnitb.com/assets/img/logo/E-SUMMIT%20LOGO-min.png"
+                                alt="logo"
+                                height=""
+                        />
+                    </a>
                 </div>
-              </div>
             </div>
-          </div>
-        </header>
-        <!--============= Header Section Ends Here =============-->
-    
-        <!--============= Banner Section Starts Here =============-->
-        <section
-          class="banner-section bg_img"
-          data-background="{% static "./assets/images/banner/banner-bg-1.png" %}"
-        >
-          <div class="container">
-            <div class="row align-items-center justify-content-between">
-              <div class="col-lg-6 col-xl-6">
+        </div>
+    </div>
+</header>
+<!--============= Header Section Ends Here =============-->
+
+<!--============= Banner Section Starts Here =============-->
+<section
+        class="banner-section bg_img"
+        data-background="{% static "./assets/images/banner/banner-bg-1.png" %}"
+>
+    <div class="container">
+        <div class="row align-items-center justify-content-between">
+            <div class="col-lg-6 col-xl-6">
                 <div class="banner-content cl-white">
-                  <h5 class="cate">ESUMMIT IPL AUCTION</h5>
-                  <h1 class="title">
-                    <span class="d-xl-block">Build Your</span> Dream Team!
-                  </h1>
-                  <p>
-                    The Thrill, the agog, the Bids, and the Auction! Build your dream team and your passion to form the best of the team with the most amazing players. Feel the adrenaline rush through your veins as you strategize throughout the Auction. If you love cricket, if you have followed IPL and if you can combine your cricketing sense with passion into your bidding strategy, this event is a must for you.
-                  </p>
-                  <a href="#get" class="custom-button yellow btn-large"
+                    <h5 class="cate">ESUMMIT IPL AUCTION</h5>
+                    <h1 class="title">
+                        <span class="d-xl-block">Build Your</span> Dream Team!
+                    </h1>
+                    <p>
+                        The Thrill, the agog, the Bids, and the Auction! Build your dream team and your passion to form
+                        the best of the team with the most amazing players. Feel the adrenaline rush through your veins
+                        as you strategize throughout the Auction. If you love cricket, if you have followed IPL and if
+                        you can combine your cricketing sense with passion into your bidding strategy, this event is a
+                        must for you.
+                    </p>
+                    <a href="#get" class="custom-button yellow btn-large"
                     >Get Started</a
-                  >
+                    >
                 </div>
-              </div>
-              <div class="d-none d-lg-block col-lg-6">
+            </div>
+            <div class="d-none d-lg-block col-lg-6">
                 <div class="banner-thumb-2">
-                  <img src="{% static "./assets/images/banner/banner-1.png"%}" alt="banner" />
+                    <img src="{% static "./assets/images/banner/banner-1.png" %}" alt="banner"/>
                 </div>
-              </div>
-            </div>
-          </div>
-          <div class="banner-shape d-none d-lg-block">
-            <img src="{% static "./assets/css/img/banner-shape.png"%}" alt="css" />
-          </div>
-        </section>
-        <!--============= Banner Section Ends Here =============-->
-    
-    
-        <!--============= Hero Section Starts Here =============-->
-        <div class="hero-section">
-            <div class="bg_img hero-bg bottom_center" data-background="{% static "./assets/images/banner/hero-bg.png"%}"></div>
-        </div>
-        <!--============= Hero Section Ends Here =============-->
-    
-    
-        <!--============= Account Section Starts Here =============-->
-        <section id="get" class="account-section padding-bottom">
-            <div class="container">
-                <div class="account-wrapper mt--100 mt-lg--440">
-                    <div class="left-side">
-                        <div class="section-header">
-                            <h2 class="title">HI, THERE</h2>
-                            <p>You can log in to your Auction account here.</p>
-    
-                        </div>
-                        <form class="login-form" method="POST">
-                            {% csrf_token %}
-                                <div class="form-group mb-30">
-                                    <label for="name"><i class="fas fa-user"></i></label>
-                                    <input type="text" id="name" name="first_name" placeholder="Name">
-                                </div>
-                                <div class="form-group mb-30">
-                                    <label for="login-email"><i class="fas fa-user"></i></label>
-                                    <input type="text" id="login-email" name="username" placeholder="Username">
-                                </div>
-                                <div class="form-group mb-30">
-                                    <label for="login-email"><i class="fas fa-envelope "></i></label>
-                                    <input type="email" id="login-email" name="email" placeholder="Email Address">
-                                </div>
-                                <div class="form-group mb-30">
-                                    <label for="login-pass"><i class="fas fa-lock"></i></label>
-                                    <input type="password" id="login-pass1"  name="password1" placeholder="Password">
-                                    <span class="pass-type"><i onclick="pass_show()" class="fas fa-eye"></i></span>
-                                </div>
-                                <div class="form-group mb-30">
-                                    <label for="login-pass"><i class="fas fa-lock"></i></label>
-                                    <input type="password" id="login-pass2"  name="password2" placeholder="Confirm Password">
-                                    <span class="pass-type"><i onclick="pass_show2()" class="fas fa-eye"></i></span>
-                                </div>
-                                <div class="form-group checkgroup mb-30">
-                                    <input type="checkbox" name="terms" id="check" required><label for="check">The E-Cell Terms of Use apply</label>
-                                </div>
-                                <div class="form-group mb-0">
-                                    <button type="submit" class="custom-button">Sign Up</button>
-                                </div>
-                            </form>
-                    </div>
-                    <div class="right-side cl-white">
-                        <div class="section-header mb-0">
-                            <h3 class="title mt-0">NEW HERE?</h3>
-                            <p>Sign up and create your Account</p>
-                            <a href="/user/signup" class="custom-button transparent">Sign Up</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!--============= Account Section Ends Here =============-->
-    
-    <!--============= Footer Section Starts Here =============-->
-    <footer
-          class="bg_img padding-top oh"
-          data-background="{% static './assets/images/footer/footer-bg.jpg'%}"
-        >
-          <div class="footer-top-shape">
-            <img src="{% static './assets/css/img/footer-top-shape.png'%}" alt="css" />
-          </div>
-          <div class="anime-wrapper">
-            <div class="anime-1 plus-anime">
-              <img src="{% static './assets/images/footer/p1.png'%}" alt="footer" />
-            </div>
-            <div class="anime-2 plus-anime">
-              <img src="{% static './assets/images/footer/p2.png'%}" alt="footer" />
-            </div>
-            <div class="anime-3 plus-anime">
-              <img src="{% static './assets/images/footer/p3.png'%}" alt="footer" />
-            </div>
-            <div class="anime-5 zigzag">
-              <img src="{% static './assets/images/footer/c2.png'%}" alt="footer" />
-            </div>
-            <div class="anime-6 zigzag">
-              <img src="{% static './assets/images/footer/c3.png'%}" alt="footer" />
-            </div>
-            <div class="anime-7 zigzag">
-              <img src="{% static './assets/images/footer/c4.png'%}" alt="footer" />
-            </div>
-          </div>
-          <div class="newslater-wrapper">
-            <div class="container">
-              <div class="newslater-area">
-                <div class="newslater-thumb">
-                  <img src="https://esummit.ecellnitb.com/assets/img/logo/E-SUMMIT%20LOGO-min.png" alt="footer" width="350px"/>
-                </div>
-                <div class="newslater-content">
-                  <div class="section-header left-style mb-low">
-                    <h5 class="cate">Subscribe to E-Cell MANIT</h5>
-                    <h3 class="title">
-                      To Get Notification regarding Upcoming Events
-                    </h3>
-                  </div>
-                  <form class="subscribe-form">
-                    <input
-                      type="text"
-                      placeholder="Enter Your Email"
-                      name="email"
-                    />
-                    <button type="submit" class="custom-button">Subscribe</button>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="footer-top padding-bottom padding-top">
-            <div class="container">
-              <div class="row mb--60">
-                <div class="col-sm-6 col-lg-3">
-                  <div class="footer-widget widget-links">
-                    <h5 class="title">We're Here to Help</h5>
-                    <ul class="links-list">
-                      <li>
-                        <a href="https://www.ecellnitb.com/e_summit_2021/ipl.html">Rules</a>
-                      </li>
-                      <li>
-                        <a href="https://www.ecellnitb.com/e_summit_2021/ipl.html">Contact Us</a>
-                      </li>
-                      <li>
-                        <a href="https://www.ecellnitb.com/e_summit_2021/ipl.html">Help & FAQ</a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="col-sm-6 col-lg-3">
-                  <div class="footer-widget widget-follow">
-                    <h5 class="title">Follow Us</h5>
-                    <ul class="links-list">
-                      <li>
-                        <a href="#0"
-                          ><i class="fas fa-phone-alt"></i>(91) 8209940374</a>
-                      </li>
-                      <li>
-                        <a href="#0"
-                          ><i class="fas fa-blender-phone"></i>(91) 8957946660</a>
-                      </li>
-                      <li>
-                        <a href="#0"
-                          ><i class="fas fa-envelope-open-text"></i
-                          >aadisngh03@gmail.com</a
-                        >
-                      </li>
-                      <li>
-                        <a href="http://manit.ac.in"
-                          ><i class="fas fa-location-arrow"></i>MANIT
-                          BHOPAL</a
-                        >
-                      </li>
-                    </ul>
-                    <ul class="social-icons">
-                      <li>
-                        <a href="https://www.facebook.com/ecellnitbhopal/" class="active"
-                          ><i class="fab fa-facebook-f"></i
-                        ></a>
-                      </li>
-                      <li>
-                        <a href="https://twitter.com/ecell_nitb"><i class="fab fa-twitter"></i></a>
-                      </li>
-                      <li>
-                        <a href="https://www.instagram.com/ecell_nitb"><i class="fab fa-instagram"></i></a>
-                      </li>
-                      <li>
-                        <a href="https://in.linkedin.com/company/ecell-manit"><i class="fab fa-linkedin-in"></i></a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="footer-bottom">
-            <div class="container">
-              <div class="copyright-area">
-                <div class="footer-bottom-wrapper">
-                  <div class="logo">
-                    <a href="https://esummit.ecellnitb.com/"
-                      ><img
-                        src="https://esummit.ecellnitb.com/assets/img/logo/E-SUMMIT%20LOGO-min.png"
-                        alt="logo"
-                        height="200px"
-                    /></a>
-                  </div>
-                  <ul class="gateway-area">
-                    <li>
-                      <p style="color: white;">
-                        &copy; Copyright 2020 <a href="https://ecellnitb.com/" style="color: black;">E-CELL MANIT</a> BY
-                        <a style="color: black;" href="#0">Mihir Waykole</a>&
-                        <a style="color: black;" href="#0">Nilesh</a>
-                      </p>
-                    </li>
-                  </ul>
-                </div>
-              </div>
             </div>
         </div>
-      </footer>
-        <!--============= Footer Section Ends Here =============-->
-        <!-- =============== VENOBOX =============== -->
-        <script>
-            function pass_show() {
-      var x = document.getElementById("login-pass1");
-      if (x.type === "password") {
-        x.type = "text";
-      } else {
-        x.type = "password";
-      }
+    </div>
+    <div class="banner-shape d-none d-lg-block">
+        <img src="{% static "./assets/css/img/banner-shape.png" %}" alt="css"/>
+    </div>
+</section>
+<!--============= Banner Section Ends Here =============-->
+
+
+<!--============= Hero Section Starts Here =============-->
+<div class="hero-section">
+    <div class="bg_img hero-bg bottom_center" data-background="{% static "./assets/images/banner/hero-bg.png" %}"></div>
+</div>
+<!--============= Hero Section Ends Here =============-->
+
+
+<!--============= Account Section Starts Here =============-->
+<section id="get" class="account-section padding-bottom">
+    <div class="container">
+        <div class="account-wrapper mt--100 mt-lg--440">
+            <div class="left-side">
+                <div class="section-header">
+                    <h2 class="title">HI, THERE</h2>
+                    <p>You can log in to your Auction account here.</p>
+
+                </div>
+                <form class="login-form" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group mb-30">
+                        <label for="name"><i class="fas fa-user"></i></label>
+                        <input type="text" id="name" name="first_name" placeholder="Name">
+                    </div>
+                    <div class="form-group mb-30">
+                        <label for="login-email"><i class="fas fa-user"></i></label>
+                        <input type="text" id="login-email" name="username" placeholder="Username">
+                    </div>
+                    <div class="form-group mb-30">
+                        <label for="login-email"><i class="fas fa-envelope "></i></label>
+                        <input type="email" id="login-email" name="email" placeholder="Email Address">
+                    </div>
+                    <div class="form-group mb-30">
+                        <label for="login-pass"><i class="fas fa-lock"></i></label>
+                        <input type="password" id="login-pass1" name="password1" placeholder="Password">
+                        <span class="pass-type"><i onclick="pass_show()" class="fas fa-eye"></i></span>
+                    </div>
+                    <div class="form-group checkgroup mb-30">
+                        <input type="checkbox" name="terms" id="check" required><label for="check">The E-Cell Terms of
+                        Use apply</label>
+                    </div>
+                    <div class="form-group mb-0">
+                        <button type="submit" class="custom-button">Sign Up</button>
+                    </div>
+                </form>
+            </div>
+            <div class="right-side cl-white">
+                <div class="section-header mb-0">
+                    <h3 class="title mt-0">Already Registered?</h3>
+                    <p>Already Have an Account</p>
+                    <a href="/login" class="custom-button transparent">Sign In</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--============= Account Section Ends Here =============-->
+
+<!--============= Footer Section Starts Here =============-->
+<!--============= Footer Section Ends Here =============-->
+<!-- =============== VENOBOX =============== -->
+<script>
+    function pass_show() {
+        var x = document.getElementById("login-pass1");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
     }
-            function pass_show2() {
-      var x = document.getElementById("login-pass2");
-      if (x.type === "password") {
-        x.type = "text";
-      } else {
-        x.type = "password";
-      }
+
+    function pass_show2() {
+        var x = document.getElementById("login-pass2");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
     }
-        </script>
-        <script src="{% static './assets/js/jquery-3.3.1.min.js' %}   "></script>
-        <script src="{% static './assets/js/modernizr-3.6.0.min.js' %}   "></script>
-        <script src="{% static './assets/js/plugins.js' %}   "></script>
-        <script src="{% static './assets/js/bootstrap.min.js' %}   "></script>
-        <script src="{% static './assets/js/isotope.pkgd.min.js' %}   "></script>
-        <script src="{% static './assets/js/wow.min.js' %}   "></script>
-        <script src="{% static './assets/js/waypoints.js' %}   "></script>
-        <script src="{% static './assets/js/nice-select.js' %}   "></script>
-        <script src="{% static './assets/js/counterup.min.js' %}   "></script>
-        <script src="{% static './assets/js/owl.min.js' %}   "></script>
-        <script src="{% static './assets/js/magnific-popup.min.js' %}   "></script>
-        <script src="{% static 'assets/js/yscountdown.min.js' %}   "></script>
-        <script src="{% static 'assets/js/jquery-ui.min.js' %}   "></script>
-        <script src="{% static './assets/js/main.js' %}   "></script>
-      {% if message %}
-        <script>
-          swal({
+</script>
+<script src="{% static './assets/js/jquery-3.3.1.min.js' %}   "></script>
+<script src="{% static './assets/js/modernizr-3.6.0.min.js' %}   "></script>
+<script src="{% static './assets/js/plugins.js' %}   "></script>
+<script src="{% static './assets/js/bootstrap.min.js' %}   "></script>
+<script src="{% static './assets/js/isotope.pkgd.min.js' %}   "></script>
+<script src="{% static './assets/js/wow.min.js' %}   "></script>
+<script src="{% static './assets/js/waypoints.js' %}   "></script>
+<script src="{% static './assets/js/nice-select.js' %}   "></script>
+<script src="{% static './assets/js/counterup.min.js' %}   "></script>
+<script src="{% static './assets/js/owl.min.js' %}   "></script>
+<script src="{% static './assets/js/magnific-popup.min.js' %}   "></script>
+<script src="{% static 'assets/js/yscountdown.min.js' %}   "></script>
+<script src="{% static 'assets/js/jquery-ui.min.js' %}   "></script>
+<script src="{% static './assets/js/main.js' %}   "></script>
+{% if message %}
+    <script>
+        swal({
             title: "Something went wrong!",
             text: "{{message}}",
             icon: "error",
             button: "Okay!",
-          });
-        </script>
-      {% endif %}
-    </body>
-    </html>
-    
+        });
+    </script>
+{% endif %}
+</body>
+</html>

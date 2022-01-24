@@ -1,0 +1,317 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+    <div class="hero-section style-2">
+        <div class="container">
+        </div>
+        <div class="bg_img hero-bg bottom_center"
+             data-background="{% static './assets/images/banner/hero-bg.png' %}"></div>
+    </div>
+    <section class="product-details padding-bottom mt--240 mt-lg--440">
+        <div class="container">
+            <div class="product-details-slider-top-wrapper">
+                <div class="product-details-slider owl-theme owl-carousel" id="sync1">
+                    <div class="slide-top-item">
+                        <div class="slide-inner">
+                            <img src="/media/{{ player.0.player_img }}" alt="product">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-40-60-80">
+                <div class="col-lg-8">
+                    <div class="product-details-content">
+                        <div class="product-details-header">
+                            <h2 class="title">{{ player.0.name }}</h2>
+                            <ul>
+                                <li>Player ID: {{ player.0.id }}</li>
+                                <li>{{ player.0.country }}</li>
+                            </ul>
+                        </div>
+                        <ul class="price-table mb-30" style="padding-left: 30px!important;">
+                            <li class="header">
+                                <h5 class="current">Current Price</h5>
+                                <h3 class="price" id="change"> ₹ {{ player.0.current_price }}K</h3>
+                            </li>
+                            {% if user %}
+                                <li>
+                                    <h3></h3>
+                                    <h5 class="info" id="name">{{ user }}</h5>
+                                </li>
+                            {% endif %}
+                            <li>
+                                <span class="details">Base Price</span>
+                                <h5 class="info">₹ {{ player.0.base_price }}K</h5>
+                            </li>
+                        </ul>
+                        {% if player.0.active %}
+                            <div class="product-bid-area" id="div-refresh">
+
+                                <form class="product-bid-form">
+                                    {% csrf_token %}
+                                    <button type="submit" class="custom-button" id="bid">Submit a bid</button>
+                                </form>
+
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="product-tab-menu-area mb-40-60 mt-70-100">
+            <div class="container">
+                <ul class="product-tab-menu nav nav-tabs">
+                    <li>
+                        <a href="#details" class="active" data-toggle="tab">
+                            <div class="thumb">
+                                <img src="{% static "./assets/images/product/tab1.png" %}" alt="product">
+                            </div>
+                            <div class="content">Description</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#delevery" data-toggle="tab">
+                            <div class="thumb">
+                                <img src=" {% static "./assets/images/product/tab2.png" %} " alt="product">
+                            </div>
+                            <div class="content">Player Stats</div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="container">
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="details">
+                    <div class="tab-details-content">
+                        <div class="header-area">
+                            <h3 class="title">Personal Information</h3>
+                            <div class="item">
+                                <table class="product-info-table">
+                                    <tbody>
+                                    <tr>
+                                        <th>Debut</th>
+                                        <td>{{ player.0.debut_year }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Type</th>
+                                        <td>{{ player.0.type }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Batting Style</th>
+                                        <td>{{ player.0.batting_style }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Test Ranking</th>
+                                        <td>{{ player.0.test_ranking }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Odi Ranking</th>
+                                        <td>{{ player.0.odi_ranking }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>T20 Ranking</th>
+                                        <td>{{ player.0.t20_ranking }}</td>
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="item">
+                                <h5 class="subtitle">Profile</h5>
+                                <p>{{ player.0.profile }}</p>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade show" id="delevery">
+                    <div class="shipping-wrapper">
+                        <div class="item">
+                            <h5 class="title">Test</h5>
+                            <div class="table-wrapper">
+                                <table class="shipping-table">
+                                    <tbody>
+                                    <tr>
+                                        <td>Matches</td>
+                                        <td>{{ test.0.test_matches }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Runs</td>
+                                        <td>{{ test.0.test_runs }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Fours</td>
+                                        <td>{{ test.0.test_fours }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sixes</td>
+                                        <td>{{ test.0.test_six }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ducks</td>
+                                        <td>{{ test.0.test_ducks }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Balls</td>
+                                        <td>{{ test.0.test_balls }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Economy</td>
+                                        <td>{{ test.0.test_economy }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Wicketss</td>
+                                        <td>{{ test.0.test_wickets }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5 Wickets Haul</td>
+                                        <td>{{ test.0.test_5w }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <h5 class="title">ODI</h5>
+                            <div class="table-wrapper">
+                                <table class="shipping-table">
+                                    <tbody>
+                                    <tr>
+                                        <td>Matches</td>
+                                        <td>{{ odi.0.odi_matches }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Runs</td>
+                                        <td>{{ odi.0.odi_runs }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Fours</td>
+                                        <td>{{ odi.0.odi_fours }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sixes</td>
+                                        <td>{{ odi.0.odi_six }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ducks</td>
+                                        <td>{{ odi.0.odi_ducks }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Balls</td>
+                                        <td>{{ odi.0.odi_balls }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Economy</td>
+                                        <td>{{ odi.0.odi_economy }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Wicketss</td>
+                                        <td>{{ odi.0.odi_wickets }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5 Wickets Haul</td>
+                                        <td>{{ odi.0.odi_5w }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <h5 class="title">T20I</h5>
+                            <div class="table-wrapper">
+                                <table class="shipping-table">
+                                    <tbody>
+                                    <tr>
+                                        <td>Matches</td>
+                                        <td>{{ t20.0.t20_matches }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Runs</td>
+                                        <td>{{ t20.0.t20_runs }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Fours</td>
+                                        <td>{{ t20.0.t20_fours }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sixes</td>
+                                        <td>{{ t20.0.t20_six }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ducks</td>
+                                        <td>{{ t20.0.t20_ducks }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Balls</td>
+                                        <td>{{ t20.0.t20_balls }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Economy</td>
+                                        <td>{{ t20.0.t20_economy }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Wicketss</td>
+                                        <td>{{ t20.0.t20_wickets }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5 Wickets Haul</td>
+                                        <td>{{ t20.0.t20_3w }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <h5 class="title">IPL</h5>
+                            <div class="table-wrapper">
+                                <table class="shipping-table">
+                                    <tbody>
+                                    <tr>
+                                        <td>Matches</td>
+                                        <td>{{ ipl.0.ipl_matches }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Runs</td>
+                                        <td>{{ ipl.0.ipl_runs }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Fours</td>
+                                        <td>{{ ipl.0.ipl_fours }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sixes</td>
+                                        <td>{{ ipl.0.ipl_six }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ducks</td>
+                                        <td>{{ ipl.0.ipl_ducks }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Balls</td>
+                                        <td>{{ ipl.0.ipl_balls }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Economy</td>
+                                        <td>{{ ipl.0.ipl_economy }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Wicketss</td>
+                                        <td>{{ ipl.0.ipl_wickets }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5 Wickets Haul</td>
+                                        <td>{{ ipl.0.ipl_3w }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

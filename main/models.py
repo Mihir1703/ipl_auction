@@ -1,8 +1,9 @@
 from django.db import models
 import datetime
 import os
+from django.contrib.auth.models import User
 
-YEAR_CHOICES = [(r, r) for r in range(1984, datetime.date.today().year+1)]
+YEAR_CHOICES = [(r, r) for r in range(1984, datetime.date.today().year + 1)]
 
 
 def current_year():
@@ -12,6 +13,13 @@ def current_year():
 batting_style_option = (
     ('Right Handed Batsman', 'Right Handed Batsman'),
     ('Left Handed Batsman', 'Left Handed Batsman')
+)
+
+types_of_player = (
+    ('Batsman', 'Batsman'),
+    ('Bowler', 'Bowler'),
+    ('Wicket Keeper', 'Wicket Keeper'),
+    ('All Rounder', 'All Rounder')
 )
 
 
@@ -28,9 +36,17 @@ class Player(models.Model):
     name = models.CharField(max_length=50, default=None)
     odi_ranking = models.IntegerField(default=0, unique=True)
     player_img = models.ImageField(upload_to='players/')
+    type = models.CharField(max_length=50, choices=types_of_player, default="")
     t20_ranking = models.IntegerField(default=0, unique=True)
     test_ranking = models.IntegerField(default=0, unique=True)
     active = models.BooleanField(default=True)
+
+    def save(self, *args, **kwargs):
+        super(Player, self).save(*args, **kwargs)
+        Ipl_stat.objects.create(id=self)
+        Odi_stat.objects.create(id=self)
+        T20_stat.objects.create(id=self)
+        Test_stat.objects.create(id=self)
 
     def delete(self):
         os.remove(self.player_img.path)
@@ -39,21 +55,22 @@ class Player(models.Model):
         return self.name
 
 
-class User(models.Model):
+class User_Data(models.Model):
     id = models.AutoField(primary_key=True)
-    status = models.BooleanField(default=True, null=True)
-    name = models.CharField(max_length=20)
+    username = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
+    status = models.BooleanField(default=True)
     money = models.IntegerField(default=10000)
 
     def __str__(self):
-        return self.name
+        return self.username.username
 
 
 class Player_Owner(models.Model):
     id = models.AutoField(primary_key=True)
     player_id = models.OneToOneField(
         Player, on_delete=models.CASCADE, null=False)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
+    user_id = models.ForeignKey(User_Data, on_delete=models.CASCADE, null=False)
+    price = models.IntegerField(default=0)
 
 
 class Ipl_stat(models.Model):
@@ -68,6 +85,9 @@ class Ipl_stat(models.Model):
     ipl_runs = models.IntegerField(default=0)
     ipl_matches = models.IntegerField(default=0)
     ipl_wickets = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.id.name
 
 
 class Odi_stat(models.Model):
@@ -84,6 +104,10 @@ class Odi_stat(models.Model):
     odi_wickets = models.IntegerField(default=0)
 
 
+    def __str__(self):
+        return self.id.name
+
+
 class T20_stat(models.Model):
     id = models.OneToOneField(
         Player, on_delete=models.CASCADE, primary_key=True)
@@ -96,6 +120,8 @@ class T20_stat(models.Model):
     t20_runs = models.IntegerField(default=0)
     t20_matches = models.IntegerField(default=0)
     t20_wickets = models.IntegerField(default=0)
+    def __str__(self):
+        return self.id.name
 
 
 class Test_stat(models.Model):
@@ -109,3 +135,5 @@ class Test_stat(models.Model):
     test_runs = models.IntegerField(default=0)
     test_matches = models.IntegerField(default=0)
     test_wickets = models.IntegerField(default=0)
+    def __str__(self):
+        return self.id.name
