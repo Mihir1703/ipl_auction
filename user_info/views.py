@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
-from main.models import *
+from .models import *
 
 
 # Create your views here.
@@ -36,15 +36,13 @@ def register_user(request):
         username = request.POST['username']
         password1 = request.POST['password1']
         try:
-            user = User.objects.create_user(
-                username=username, password=password1, email=email, first_name=fname, last_name="")
+            user = User.objects.create_user(username=username, password=password1, email=email, first_name=fname,
+                last_name="")
             user.save()
             User_Data.objects.create(username=user).save()
             return redirect('/')
         except:
-            return render(request, 'signup.html', {
-                "message": "Username already taken"
-            })
+            return render(request, 'signup.html', {"message": "Username already taken"})
     else:
         return render(request, 'signup.html')
 
@@ -57,15 +55,10 @@ def index(request):
     data_all = Player.objects.filter(active=True).filter(type='All Rounder').order_by('-t20_ranking')[:3]
     in_auction = Player_Owner.objects.all()
     in_auction = Player.objects.filter(id__in=in_auction).filter(active=True)[:1]
-    print(request.user.get_full_name())
-    return render(request, 'index.html', {
-        'username': request.user.get_full_name(),
-        'Batsman': data_bat,
-        'Bowler': data_bowl,
-        'WicketKeeper': data_wc,
-        'AllRounder': data_all,
-        'active': in_auction
-    })
+    print(request.user)
+    return render(request, 'index.html',
+                  {'username': request.user.get_full_name(), 'Batsman': data_bat, 'Bowler': data_bowl,
+                      'WicketKeeper': data_wc, 'AllRounder': data_all, 'active': in_auction})
 
 
 def single(request, id):
@@ -76,17 +69,19 @@ def single(request, id):
     t20 = T20_stat.objects.filter(id__in=player)
     curr_user = Player_Owner.objects.filter(player_id__in=player)
     username = User.objects.filter(username__in=curr_user)
-    print("OK")
     if len(username) == 0:
         username = False
     else:
         username = username[0].username
     print(player[0].player_img)
-    return render(request, 'single_player.html', {
-        "player": player,
-        "ipl": ipl,
-        "odi": odi,
-        "test": test,
-        "t20": t20,
-        "user": username
-    })
+    return render(request, 'single_player.html',
+                  {"player": player, "ipl": ipl, "odi": odi, "test": test, "t20": t20, "user": username})
+
+
+@login_required(login_url='/login/')
+def user(request):
+    user_info = User.objects.filter(username=request.user)
+    us = User_Data.objects.filter(username__in=user_info)
+    owned = Player_Owner.objects.filter(user_id__in=us)
+    owned_players = Player.objects.filter(id__in=owned)
+    return render(request, 'user.html', {'user': us, 'Player': owned_players, })

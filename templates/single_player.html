@@ -34,14 +34,21 @@
                             <li class="header">
                                 <h5 class="current">Current Price</h5>
                                 <h3 class="price" id="change"> ₹ {{ player.0.current_price }}K</h3>
-                            </li>
                             {% if user %}
-                                <li>
-                                    <h3></h3>
-                                    <h5 class="info" id="name">{{ user }}</h5>
                                 </li>
+                                    <li>
+                                        <h3></h3>
+                                        <h5 class="info" id="name">{{ user }}</h5>
+                                    </li>
+                                <li>
+                            {% else %}
+                                </li>
+                                    <li>
+                                        <h3></h3>
+                                        <h5 class="info" id="name"></h5>
+                                    </li>
+                                <li>
                             {% endif %}
-                            <li>
                                 <span class="details">Base Price</span>
                                 <h5 class="info">₹ {{ player.0.base_price }}K</h5>
                             </li>
@@ -298,7 +305,7 @@
                                         <td>{{ ipl.0.ipl_economy }}</td>
                                     </tr>
                                     <tr>
-                                        <td>Wicketss</td>
+                                        <td>Wickets</td>
                                         <td>{{ ipl.0.ipl_wickets }}</td>
                                     </tr>
                                     <tr>
@@ -319,8 +326,27 @@
 {% block JS_Block %}
     <script>
         let bid_end = false
-        if(bid_end){
+        if (bid_end) {
             document.getElementById('bid').style.display = 'none'
+        }
+        let url
+        url = window.location.host;
+        url = "ws://" + url.slice(0, url.length - 5) + ":8000/player/{{ player.0.id }}"
+        console.log(url)
+        let connection = new WebSocket(url)
+        {#let connection;#}
+        window.onload = () => {
+        }
+        connection.onclose = () => {
+            window.location.reload()
+        }
+        connection.onmessage = (data) => {
+            data = JSON.parse(data.data)
+            console.log(data)
+            document.getElementById('change').innerText = "";
+            document.getElementById('change').innerText = data['curr_price'];
+            document.getElementById('name').innerText = '';
+            document.getElementById('name').innerText = data['user']
         }
     </script>
 {% endblock %}

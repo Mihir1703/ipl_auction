@@ -1,3 +1,4 @@
-Django
+Django~=4.0.1
 django-cleanup
 djangorestframework
+channels~=3.0.4
