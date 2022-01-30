@@ -9,6 +9,7 @@ urlpatterns = [
     path('signup/', views.register_user),
     path('', views.index),
     path('player/<int:id>/', views.single),
+    path('player/<str:tag>/', views.skill),
     path('user/', views.user),
     path('bid/<int:id>', views.api_bid)
 ]

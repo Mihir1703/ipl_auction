@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+    <div class="overlayer" id="overlayer">
+        <div class="loader">
+            <div class="loader-inner"></div>
+        </div>
+    </div>
+    <a href="#0" class="scrollToTop"><i class="fas fa-angle-up"></i></a>
+    <div class="overlay"></div>
+    <!--============= ScrollToTop Section Ends Here =============-->
+
+
+    <!--============= Header Section Starts Here =============-->
+    <header>
+        <div class="header-bottom">
+            <div class="container">
+                <div class="header-wrapper">
+                    <div class="logo">
+                        <a href="">
+                            <img
+                                    src="https://esummit.ecellnitb.com/assets/img/logo/E-SUMMIT%20LOGO-min.png"
+                                    alt="logo"
+                            />
+                        </a>
+
+                    </div>
+                    <div class="logo">
+                        <a href="/user">{{ username }}</a>
+                        <a href="/logout" class="waves-effect waves-light btn logout-btn">Log Out</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!--============= Header Section Ends Here =============-->
+
+    <!--============= Hero Section Starts Here =============-->
+    <div class="hero-section style-2">
+        <div class="container">
+        </div>
+        <div class="bg_img hero-bg bottom_center"
+             data-background="{% static './assets/images/banner/hero-bg.png' %}"></div>
+    </div>
+    <!--============= Hero Section Ends Here =============-->
+
+
+    <!--============= Featured Auction Section Starts Here =============-->
+    <section class="featured-auction-section padding-bottom mt--240 mt-lg--440 pos-rel">
+        <div class="container">
+            <div class="section-header cl-white mw-100 left-style">
+                <h3 class="title">{{ skill_type }}</h3>
+            </div>
+            <div class="row justify-content-center mb-30-none">
+                {% for i in player %}
+                    <div class="col-sm-10 col-md-6 col-lg-4">
+
+                        <div class="auction-item-2">
+                            <div class="auction-thumb">
+                                <a href="/player/{{ i.id }}"><img src="/media/{{ i.player_img }}" height="200px"
+                                                                      width="200px" alt="car"></a>
+
+                                <a href="#0" class="bid"><i class="flaticon-auction"></i></a>
+                            </div>
+                            <div class="auction-content">
+                                <h6 class="title">
+                                    <a href="#0">
+                                        <div style="text-align: center;">{{ i.name }}</div>
+                                    </a>
+                                </h6>
+                                <h6 class="title">
+                                    <a href="#0">
+                                        <div style="text-align: center;">{{ i.base_price }}</div>
+                                    </a>
+                                </h6>
+                                <br>
+                                <div class="text-center">
+                                    <a href="/player/{{ i.id }}" class="custom-button">View Profile</a>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        </div>
+    </section>
+{% endblock %}

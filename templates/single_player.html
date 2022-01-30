@@ -375,6 +375,7 @@
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
                 },
                 success: function (data) {
+                bidding = false;
                     if (data.code === 404) {
                         Swal.fire(
                             'Try Again?',
@@ -394,7 +395,6 @@
                     swal("Try Again!!", `Some Error Occured.`, "error")
                 }
             })
-            bidding = false;
         }
     </script>
 {% endblock %}

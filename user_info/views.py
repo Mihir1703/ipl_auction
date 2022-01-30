@@ -88,6 +88,7 @@ def api_bid(request, id):
             return JsonResponse({"code": 200, "Status": "Success"})
 
 
+@login_required(login_url='/login/')
 def single(request, id):
     player = Player.objects.filter(id=id)
     us = User.objects.filter(username=request.user)
@@ -118,3 +119,24 @@ def user(request):
     owned = Player_Owner.objects.filter(user_id__in=us)
     owned_players = Player.objects.filter(id__in=owned)
     return render(request, 'user.html', {'user': us, 'Player': owned_players, })
+
+
+def skill(request, tag):
+    player = None
+    skill_player = None
+    if 'bat' in tag:
+        player = Player.objects.filter(type='Batsman')
+        skill_player = "Batsman"
+    elif 'bowl' in tag:
+        player = Player.objects.filter(type='Bowler')
+        skill_player = "Bowler"
+    elif 'all' in tag:
+        player = Player.objects.filter(type='All Rounder')
+        skill_player = "All Rounder"
+    else:
+        player = Player.objects.filter(type='Wicket Keeper')
+        skill_player = "Wicket Keeper"
+    return render(request, 'skill.html', {
+        "player": player,
+        'skill_type': skill_player
+    })
