@@ -47,13 +47,12 @@ class Player(models.Model):
 
     def save(self, *args, **kwargs):
         super(Player, self).save(*args, **kwargs)
+        if len(Ipl_stat.objects.filter(id=self)) != 0:
+            return
         Ipl_stat.objects.create(id=self)
         Odi_stat.objects.create(id=self)
         T20_stat.objects.create(id=self)
         Test_stat.objects.create(id=self)
-
-    def delete(self):
-        os.remove(self.player_img.path)
 
     def __str__(self):
         return self.name
@@ -63,7 +62,7 @@ class User_Data(models.Model):
     id = models.AutoField(primary_key=True)
     username = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
     status = models.BooleanField(default=True)
-    money = models.IntegerField(default=100000)
+    money = models.IntegerField(default=5000000)
 
     def __str__(self):
         return self.username.username
@@ -79,15 +78,16 @@ class Player_Owner(models.Model):
     def save(self, *args, **kwargs):
         super(Player_Owner, self).save(*args, **kwargs)
         pl = Player_Owner.objects.filter(id=self.id)
-        Player.objects.filter(id__in=pl).update(current_price=self.price)
+        Player.objects.filter(id=pl[0].player_id.id).update(current_price=self.price + 10000)
+        player = Player.objects.filter(id=pl[0].player_id.id)[0]
         channel_layer = get_channel_layer()
-        print(channel_layer)
         data = {
-            "curr_price": self.price,
+            "curr_price": self.price + 10000,
+            "base_price": self.price,
             "user": self.user_id.username.username
         }
         async_to_sync(channel_layer.group_send)(
-            ('player_%s' % str(self.id)), {
+            'player_%s' % str(player.id), {
                 'type': 'send_notification',
                 'value': json.dumps(data)
             }

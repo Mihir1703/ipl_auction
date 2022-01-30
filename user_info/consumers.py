@@ -22,8 +22,7 @@ class PlayerConsumer(AsyncJsonWebsocketConsumer):
         await self.accept()
 
     async def receive(self, text_data=None, bytes_data=None):
-        print(text_data)
-        data = json.loads(text_data);
+        data = json.loads(text_data)
         await self.send(text_data=json.dumps(data))
 
     async def disconnect(self, code):

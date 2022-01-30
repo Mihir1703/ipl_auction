@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from django.http import JsonResponse
 
 from .models import *
 
@@ -37,7 +38,7 @@ def register_user(request):
         password1 = request.POST['password1']
         try:
             user = User.objects.create_user(username=username, password=password1, email=email, first_name=fname,
-                last_name="")
+                                            last_name="")
             user.save()
             User_Data.objects.create(username=user).save()
             return redirect('/')
@@ -58,24 +59,56 @@ def index(request):
     print(request.user)
     return render(request, 'index.html',
                   {'username': request.user.get_full_name(), 'Batsman': data_bat, 'Bowler': data_bowl,
-                      'WicketKeeper': data_wc, 'AllRounder': data_all, 'active': in_auction})
+                   'WicketKeeper': data_wc, 'AllRounder': data_all, 'active': in_auction})
+
+
+def api_bid(request, id):
+    player = Player.objects.filter(id=id)
+    us = User.objects.filter(username=request.user)
+    user = User_Data.objects.filter(username__in=us)
+    if request.method == 'POST':
+        print(user[0].money, player[0].current_price, user[0].username)
+        if player[0].current_price != int(request.POST['value']):
+            return JsonResponse({"Status": "Failed", "code": 404}, status=404)
+        elif int(user[0].money) < int(player[0].current_price):
+            return JsonResponse({"Status": "Failed, Not enough currency left", "code": 404}, status=404)
+        else:
+            own = Player_Owner.objects.filter(player_id__in=player)
+            if len(own) == 0:
+                new_user = Player_Owner.objects.create(player_id=player[0], user_id=user[0],
+                                                       price=int(request.POST['value']))
+                new_user.save()
+            else:
+                prev = User_Data.objects.filter(username__in=User.objects.filter(username=own[0].user_id.username))
+                if prev[0].id == user[0].id:
+                    return JsonResponse({"Status": "You Already own this player", "code": 404})
+                own[0].price = int(request.POST['value'])
+                own[0].user_id = user[0]
+                own[0].save(update_fields=['price', 'user_id'])
+            return JsonResponse({"code": 200, "Status": "Success"})
 
 
 def single(request, id):
     player = Player.objects.filter(id=id)
+    us = User.objects.filter(username=request.user)
     ipl = Ipl_stat.objects.filter(id__in=player)
     odi = Odi_stat.objects.filter(id__in=player)
     test = Test_stat.objects.filter(id__in=player)
     t20 = T20_stat.objects.filter(id__in=player)
     curr_user = Player_Owner.objects.filter(player_id__in=player)
     username = User.objects.filter(username__in=curr_user)
+    owner = Player_Owner.objects.filter(player_id__in=player)
+    if len(owner) == 0:
+        owner = ""
+    else:
+        owner = owner[0].user_id.username
     if len(username) == 0:
         username = False
     else:
         username = username[0].username
-    print(player[0].player_img)
     return render(request, 'single_player.html',
-                  {"player": player, "ipl": ipl, "odi": odi, "test": test, "t20": t20, "user": username})
+                  {"player": player, "ipl": ipl, "odi": odi, "test": test, "t20": t20, "user": username,
+                   "purchase": owner})
 
 
 @login_required(login_url='/login/')

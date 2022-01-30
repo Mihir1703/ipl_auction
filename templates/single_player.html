@@ -33,35 +33,36 @@
                         <ul class="price-table mb-30" style="padding-left: 30px!important;">
                             <li class="header">
                                 <h5 class="current">Current Price</h5>
-                                <h3 class="price" id="change"> ₹ {{ player.0.current_price }}K</h3>
-                            {% if user %}
-                                </li>
+                                <h3 class="price" id="change">₹{{ player.0.current_price }}</h3>
+                                {% if user %}
+                                    </li>
                                     <li>
                                         <h3></h3>
                                         <h5 class="info" id="name">{{ user }}</h5>
                                     </li>
-                                <li>
-                            {% else %}
-                                </li>
+                                    <li>
+                                        {% else %}
+                                    </li>
                                     <li>
                                         <h3></h3>
-                                        <h5 class="info" id="name"></h5>
+                                        <h5 class="info" id="name">{{ purchase }}</h5>
                                     </li>
-                                <li>
-                            {% endif %}
+                                    <li>
+                                {% endif %}
                                 <span class="details">Base Price</span>
-                                <h5 class="info">₹ {{ player.0.base_price }}K</h5>
-                            </li>
+                                <h5 class="info" id="base_price">₹ {{ player.0.base_price }}</h5>
+                                </li>
                         </ul>
                         {% if player.0.active %}
-                            <div class="product-bid-area" id="div-refresh">
-
-                                <form class="product-bid-form">
+                            <form class="product-bid-area" id="form-bid div-refresh" action="/player/{{ player.0.id }}/"
+                                  method="post">
+                                <div class="product-bid-form">
                                     {% csrf_token %}
+                                    <input type="hidden" name="value" id="bidding_price"
+                                           value="{{ player.0.current_price }}">
                                     <button type="submit" class="custom-button" id="bid">Submit a bid</button>
-                                </form>
-
-                            </div>
+                                </div>
+                            </form>
                         {% endif %}
                     </div>
                 </div>
@@ -134,6 +135,7 @@
                         </div>
                     </div>
                 </div>
+                {% csrf_token %}
                 <div class="tab-pane fade show" id="delevery">
                     <div class="shipping-wrapper">
                         <div class="item">
@@ -321,7 +323,83 @@
             </div>
         </div>
     </section>
+    <script>
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger'
+            },
+            buttonsStyling: false
+        })
+        let bidding = false
+        let form = document.getElementsByTagName('form')[0];
+        form.addEventListener('submit', (event) => {
+            bidding = true
+            event.preventDefault()
+            let curr_price = document.getElementById('change').innerText;
+            curr_price = parseInt(curr_price.slice(1));
+            swalWithBootstrapButtons.fire({
+                title: 'Are you sure?',
+                text: `You won't be able to revert this! Price : ${curr_price}`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, buy it!',
+                cancelButtonText: 'No, cancel!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    ajax_lagao()
+                } else if (
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons.fire(
+                        'Cancelled',
+                        'Your are safe :)',
+                        'error'
+                    )
+                }
+                bidding = false;
+            })
+        })
+        let ajax_lagao = () => {
+            let curr_price = document.getElementById('change').innerText;
+            curr_price = parseInt(curr_price.slice(1));
+            if (parseInt(curr_price) !== parseInt($('#bidding_price').val())) {
+                return
+            }
+            $.ajax({
+                type: 'POST',
+                url: '/bid/{{ player.0.id }}',
+                data: {
+                    value: curr_price,
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                },
+                success: function (data) {
+                    if (data.code === 404) {
+                        Swal.fire(
+                            'Try Again?',
+                            `${data.Status} Current Price :  ${curr_price}`,
+                            'error'
+                        )
+                    } else {
+                        Swal.fire(
+                            'Hurray!!',
+                            `You Have purchased player successfully at price ${curr_price}`,
+                            'success'
+                        )
+                    }
+                    console.log((new Date()).getSeconds(), (new Date()).getMilliseconds())
+                },
+                fail: function (data) {
+                    swal("Try Again!!", `Some Error Occured.`, "error")
+                }
+            })
+            bidding = false;
+        }
+    </script>
 {% endblock %}
+
+
 
 {% block JS_Block %}
     <script>
@@ -334,17 +412,40 @@
         url = "ws://" + url.slice(0, url.length - 5) + ":8000/player/{{ player.0.id }}"
         console.log(url)
         let connection = new WebSocket(url)
-        {#let connection;#}
         window.onload = () => {
         }
         connection.onclose = () => {
             window.location.reload()
         }
         connection.onmessage = (data) => {
+            console.log((new Date()).getSeconds(), (new Date()).getMilliseconds())
             data = JSON.parse(data.data)
-            console.log(data)
+            let curr_price = parseInt(data['curr_price']);
+            swalWithBootstrapButtons.fire({
+                title: 'Are you sure?',
+                text: `you won't be able to revert this! Price : ${curr_price}`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, buy it!',
+                cancelButtonText: 'No, cancel!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    ajax_lagao()
+                } else if (
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons.fire(
+                        'Cancelled',
+                        'Your are safe :)',
+                        'error'
+                    )
+                }
+                bidding = false;
+            })
+            document.getElementById('bidding_price').value = String(data['curr_price'])
             document.getElementById('change').innerText = "";
-            document.getElementById('change').innerText = data['curr_price'];
+            document.getElementById('change').innerText = '₹' + data['curr_price'];
             document.getElementById('name').innerText = '';
             document.getElementById('name').innerText = data['user']
         }
