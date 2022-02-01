@@ -2,3 +2,5 @@ Django~=4.0.1
 django-cleanup
 djangorestframework
 channels~=3.0.4
+Pillow~=9.0.0
+asgiref~=3.4.1

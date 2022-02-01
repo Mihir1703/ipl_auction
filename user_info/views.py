@@ -50,10 +50,10 @@ def register_user(request):
 
 @login_required(login_url='/login/')
 def index(request):
-    data_bat = Player.objects.filter(active=True).filter(type='Batsman').order_by('-t20_ranking')[:3]
-    data_bowl = Player.objects.filter(active=True).filter(type='Bowler').order_by('-t20_ranking')[:3]
-    data_wc = Player.objects.filter(active=True).filter(type='Wicket Keeper').order_by('-t20_ranking')[:3]
-    data_all = Player.objects.filter(active=True).filter(type='All Rounder').order_by('-t20_ranking')[:3]
+    data_bat = Player.objects.filter(type='Batsman').order_by('-t20_ranking')[:3]
+    data_bowl = Player.objects.filter(type='Bowler').order_by('-t20_ranking')[:3]
+    data_wc = Player.objects.filter(type='Wicket Keeper').order_by('-t20_ranking')[:3]
+    data_all = Player.objects.filter(type='All Rounder').order_by('-t20_ranking')[:3]
     in_auction = Player_Owner.objects.all()
     in_auction = Player.objects.filter(id__in=in_auction).filter(active=True)[:1]
     print(request.user)
@@ -67,11 +67,14 @@ def api_bid(request, id):
     us = User.objects.filter(username=request.user)
     user = User_Data.objects.filter(username__in=us)
     if request.method == 'POST':
-        print(user[0].money, player[0].current_price, user[0].username)
-        if player[0].current_price != int(request.POST['value']):
-            return JsonResponse({"Status": "Failed", "code": 404}, status=404)
+        print(int(user[0].money), int(player[0].current_price))
+        print("Called")
+        if not player[0].active:
+            return JsonResponse({"Status": "Sorry, the player is not currently available for bidding", "code": 404})
+        elif player[0].current_price != int(request.POST['value']):
+            return JsonResponse({"Status": "Someone Already have bidden on the price you have bidden.", "code": 404})
         elif int(user[0].money) < int(player[0].current_price):
-            return JsonResponse({"Status": "Failed, Not enough currency left", "code": 404}, status=404)
+            return JsonResponse({"Status": "Failed, Not enough currency left", "code": 404})
         else:
             own = Player_Owner.objects.filter(player_id__in=player)
             if len(own) == 0:
@@ -85,7 +88,9 @@ def api_bid(request, id):
                 own[0].price = int(request.POST['value'])
                 own[0].user_id = user[0]
                 own[0].save(update_fields=['price', 'user_id'])
-            return JsonResponse({"code": 200, "Status": "Success"})
+                print("Send")
+                bid.timer = 10
+                return JsonResponse({"code": 200, "Status": "Success"})
 
 
 @login_required(login_url='/login/')
@@ -122,8 +127,6 @@ def user(request):
 
 
 def skill(request, tag):
-    player = None
-    skill_player = None
     if 'bat' in tag:
         player = Player.objects.filter(type='Batsman')
         skill_player = "Batsman"

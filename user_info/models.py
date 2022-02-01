@@ -1,11 +1,77 @@
 import json
-
 from django.db import models
 import datetime
-import os
 from django.contrib.auth.models import User
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
+import time
+from threading import Thread
+
+
+class Bidder(Thread):
+    timer = 10
+    player_id = 0
+    state = False
+    on_bid = False
+
+    def __int__(self):
+        Thread.__init__(self)
+
+    def rest_timeout(self):
+        while self.timer != 0:
+            time.sleep(1)
+            self.timer = self.timer - 1
+        self.on_bid = True
+        self.timer = 10
+
+    def process(self):
+        channel_layer = get_channel_layer()
+        data = {"is_active": True, "message": f"Get Ready!! {Player.objects.filter(id=self.player_id)[0].name} will "
+                                              f"be auction in 30 seconds.", 'player_id': self.player_id}
+        async_to_sync(channel_layer.group_send)('Bidding_grp',
+                                                {'type': 'update', 'value': json.dumps(data)})
+        time.sleep(30)
+        data = {"is_active": True, "message": f"Get Ready!! {Player.objects.filter(id=self.player_id)[0].name} is "
+                                              f"under auction", 'player_id': self.player_id}
+        async_to_sync(channel_layer.group_send)('Bidding_grp',
+                                                {'type': 'update', 'value': json.dumps(data)})
+        Player.objects.filter(id=self.player_id).update(active=True)
+        while self.timer != 0:
+            time.sleep(1)
+            self.timer = self.timer - 1
+            print(self.timer)
+        Player.objects.filter(id=self.player_id).update(active=False)
+        owner = Player_Owner.objects.filter(player_id__in=Player.objects.filter(id=self.player_id))
+        if len(owner) != 0:
+            inbuilt_user = User.objects.filter(username=owner[0].user_id.username)
+            purchase = User_Data.objects.get(username__in=inbuilt_user)
+            purchase.money = purchase.money - owner[0].price
+            purchase.save(update_fields=['money'])
+        else:
+            pass
+        data = {"is_active": False, "message": f"Cool Down!! {Player.objects.filter(id=self.player_id)[0].name} has "
+                                               f"been sold out to {'Nobody' if len(owner) == 0 else owner[0].user_id.username}, next auction after 2 minutes!",
+                'player_id': Player.objects.filter(id=self.player_id)[0].id}
+        async_to_sync(channel_layer.group_send)('Bidding_grp',
+                                                {'type': 'update', 'value': json.dumps(data)})
+        self.timer = 100
+        self.on_bid = False
+        self.player_id = 0
+
+    def run(self):
+        players = Player.objects.all()
+        for player in players:
+            Player.objects.filter(id=player.id).update(active=False)
+            self.on_bid = True
+            self.player_id = player.id
+            print("Bidding start", player.id)
+            self.process()
+            Player.objects.filter(id=player.id).update(active=False)
+            print("Time out")
+            self.rest_timeout()
+
+
+bid = Bidder()
 
 YEAR_CHOICES = [(r, r) for r in range(1984, datetime.date.today().year + 1)]
 
@@ -15,27 +81,19 @@ def current_year():
 
 
 batting_style_option = (
-    ('Right Handed Batsman', 'Right Handed Batsman'),
-    ('Left Handed Batsman', 'Left Handed Batsman')
-)
+    ('Right Handed Batsman', 'Right Handed Batsman'), ('Left Handed Batsman', 'Left Handed Batsman'))
 
 types_of_player = (
-    ('Batsman', 'Batsman'),
-    ('Bowler', 'Bowler'),
-    ('Wicket Keeper', 'Wicket Keeper'),
-    ('All Rounder', 'All Rounder')
-)
+    ('Batsman', 'Batsman'), ('Bowler', 'Bowler'), ('Wicket Keeper', 'Wicket Keeper'), ('All Rounder', 'All Rounder'))
 
 
 class Player(models.Model):
     id = models.AutoField(primary_key=True)
     base_price = models.IntegerField(default=0)
-    batting_style = models.CharField(
-        max_length=100, default="", choices=batting_style_option)
+    batting_style = models.CharField(max_length=100, default="", choices=batting_style_option)
     country = models.CharField(max_length=20, default="India")
     current_price = models.IntegerField(default=0)
-    debut_year = models.IntegerField(
-        choices=YEAR_CHOICES, default=current_year)
+    debut_year = models.IntegerField(choices=YEAR_CHOICES, default=current_year)
     profile = models.TextField(null=True)
     name = models.CharField(max_length=50, default=None)
     odi_ranking = models.IntegerField(default=0, unique=True)
@@ -43,7 +101,7 @@ class Player(models.Model):
     type = models.CharField(max_length=50, choices=types_of_player, default="")
     t20_ranking = models.IntegerField(default=0, unique=True)
     test_ranking = models.IntegerField(default=0, unique=True)
-    active = models.BooleanField(default=True)
+    active = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         super(Player, self).save(*args, **kwargs)
@@ -70,8 +128,7 @@ class User_Data(models.Model):
 
 class Player_Owner(models.Model):
     id = models.AutoField(primary_key=True)
-    player_id = models.OneToOneField(
-        Player, on_delete=models.CASCADE, null=False)
+    player_id = models.OneToOneField(Player, on_delete=models.CASCADE, null=False)
     user_id = models.ForeignKey(User_Data, on_delete=models.CASCADE, null=False)
     price = models.IntegerField(default=0)
 
@@ -81,22 +138,13 @@ class Player_Owner(models.Model):
         Player.objects.filter(id=pl[0].player_id.id).update(current_price=self.price + 10000)
         player = Player.objects.filter(id=pl[0].player_id.id)[0]
         channel_layer = get_channel_layer()
-        data = {
-            "curr_price": self.price + 10000,
-            "base_price": self.price,
-            "user": self.user_id.username.username
-        }
-        async_to_sync(channel_layer.group_send)(
-            'player_%s' % str(player.id), {
-                'type': 'send_notification',
-                'value': json.dumps(data)
-            }
-        )
+        data = {"curr_price": self.price + 10000, "base_price": self.price, "user": self.user_id.username.username}
+        async_to_sync(channel_layer.group_send)('player_%s' % str(player.id),
+                                                {'type': 'send_notification', 'value': json.dumps(data)})
 
 
 class Ipl_stat(models.Model):
-    id = models.OneToOneField(
-        Player, on_delete=models.CASCADE, primary_key=True)
+    id = models.OneToOneField(Player, on_delete=models.CASCADE, primary_key=True)
     ipl_3w = models.IntegerField(default=0)
     ipl_balls = models.IntegerField(default=0)
     ipl_ducks = models.IntegerField(default=0)
@@ -112,8 +160,7 @@ class Ipl_stat(models.Model):
 
 
 class Odi_stat(models.Model):
-    id = models.OneToOneField(
-        Player, on_delete=models.CASCADE, primary_key=True)
+    id = models.OneToOneField(Player, on_delete=models.CASCADE, primary_key=True)
     odi_5w = models.IntegerField(default=0)
     odi_balls = models.IntegerField(default=0)
     odi_ducks = models.IntegerField(default=0)
@@ -129,8 +176,7 @@ class Odi_stat(models.Model):
 
 
 class T20_stat(models.Model):
-    id = models.OneToOneField(
-        Player, on_delete=models.CASCADE, primary_key=True)
+    id = models.OneToOneField(Player, on_delete=models.CASCADE, primary_key=True)
     t20_3w = models.IntegerField(default=0)
     t20_balls = models.IntegerField(default=0)
     t20_ducks = models.IntegerField(default=0)
@@ -159,3 +205,13 @@ class Test_stat(models.Model):
 
     def __str__(self):
         return self.id.name
+
+
+class Start_Bidding(models.Model):
+    bid = models.BooleanField(default=False)
+
+    def save(self, *args, **kwargs):
+        if self.bid:
+            bid.start()
+            bid.state = True
+        super(Start_Bidding, self).save()

@@ -53,17 +53,15 @@
                                 <h5 class="info" id="base_price">₹ {{ player.0.base_price }}</h5>
                                 </li>
                         </ul>
-                        {% if player.0.active %}
-                            <form class="product-bid-area" id="form-bid div-refresh" action="/player/{{ player.0.id }}/"
-                                  method="post">
-                                <div class="product-bid-form">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="value" id="bidding_price"
-                                           value="{{ player.0.current_price }}">
-                                    <button type="submit" class="custom-button" id="bid">Submit a bid</button>
-                                </div>
-                            </form>
-                        {% endif %}
+                        <form class="product-bid-area" id="form-bid div-refresh" action="/player/{{ player.0.id }}/"
+                              method="post">
+                            <div class="product-bid-form">
+                                {% csrf_token %}
+                                <input type="hidden" name="value" id="bidding_price"
+                                       value="{{ player.0.current_price }}">
+                                <button type="submit" class="custom-button" id="bid">Submit a bid</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -324,39 +322,24 @@
         </div>
     </section>
     <script>
-        const swalWithBootstrapButtons = Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-success',
-                cancelButton: 'btn btn-danger'
-            },
-            buttonsStyling: false
-        })
         let bidding = false
         let form = document.getElementsByTagName('form')[0];
         form.addEventListener('submit', (event) => {
             bidding = true
             event.preventDefault()
-            let curr_price = document.getElementById('change').innerText;
-            curr_price = parseInt(curr_price.slice(1));
-            swalWithBootstrapButtons.fire({
+            {#console.log(document.getElementById('bidding_price'))#}
+            let curr_price = parseInt(document.getElementById('bidding_price').value);
+            Swal.fire({
                 title: 'Are you sure?',
-                text: `You won't be able to revert this! Price : ${curr_price}`,
+                text: `you won't be able to revert this! Price : ${curr_price}`,
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Yes, buy it!',
-                cancelButtonText: 'No, cancel!',
-                reverseButtons: true
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Go for it!'
             }).then((result) => {
                 if (result.isConfirmed) {
                     ajax_lagao()
-                } else if (
-                    result.dismiss === Swal.DismissReason.cancel
-                ) {
-                    swalWithBootstrapButtons.fire(
-                        'Cancelled',
-                        'Your are safe :)',
-                        'error'
-                    )
                 }
                 bidding = false;
             })
@@ -375,11 +358,11 @@
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
                 },
                 success: function (data) {
-                bidding = false;
+                    bidding = false;
                     if (data.code === 404) {
                         Swal.fire(
                             'Try Again?',
-                            `${data.Status} Current Price :  ${curr_price}`,
+                            `${data.Status} Your Bid :  ${curr_price}`,
                             'error'
                         )
                     } else {
@@ -399,50 +382,41 @@
     </script>
 {% endblock %}
 
-
-
 {% block JS_Block %}
     <script>
         let bid_end = false
         if (bid_end) {
             document.getElementById('bid').style.display = 'none'
         }
-        let url
-        url = window.location.host;
-        url = "ws://" + url.slice(0, url.length - 5) + ":8000/player/{{ player.0.id }}"
-        console.log(url)
-        let connection = new WebSocket(url)
+        let uri
+        uri = window.location.host;
+        uri = "ws://" + uri + "/player/{{ player.0.id }}"
+        let connection2 = new WebSocket(uri)
         window.onload = () => {
         }
-        connection.onclose = () => {
+        connection2.onclose = () => {
             window.location.reload()
         }
-        connection.onmessage = (data) => {
+        connection2.onmessage = (data) => {
             console.log((new Date()).getSeconds(), (new Date()).getMilliseconds())
             data = JSON.parse(data.data)
-            let curr_price = parseInt(data['curr_price']);
-            swalWithBootstrapButtons.fire({
-                title: 'Are you sure?',
-                text: `you won't be able to revert this! Price : ${curr_price}`,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Yes, buy it!',
-                cancelButtonText: 'No, cancel!',
-                reverseButtons: true
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    ajax_lagao()
-                } else if (
-                    result.dismiss === Swal.DismissReason.cancel
-                ) {
-                    swalWithBootstrapButtons.fire(
-                        'Cancelled',
-                        'Your are safe :)',
-                        'error'
-                    )
-                }
-                bidding = false;
-            })
+            if (bidding === true) {
+                let curr_price = parseInt(data['curr_price']);
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: `you won't be able to revert this! Price : ${curr_price}`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Go for it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        ajax_lagao()
+                    }
+                    bidding = false;
+                })
+            }
             document.getElementById('bidding_price').value = String(data['curr_price'])
             document.getElementById('change').innerText = "";
             document.getElementById('change').innerText = '₹' + data['curr_price'];
