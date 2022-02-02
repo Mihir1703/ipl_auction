@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
 from django.http import JsonResponse
+from django.shortcuts import render, redirect
 
 from .models import *
 
@@ -15,6 +15,13 @@ def login_user(request):
         password = request.POST['pass']
         user = authenticate(request, username=username, password=password)
         if user is not None:
+            u = User.objects.filter(username=username)
+            session = UserSession.objects.filter(user_acc__in=u)
+            if len(session) != 0:
+                messages = "Already a session is going on"
+                return render(request, "signin.html", {"message": messages})
+            else:
+                UserSession.objects.create(user_acc=u[0])
             login(request, user)
             return redirect('/')
         else:
@@ -26,6 +33,7 @@ def login_user(request):
 
 @login_required(login_url='/login/')
 def logout_user(request):
+    UserSession.objects.filter(user_acc__in=User.objects.filter(username=request.user)).delete()
     logout(request)
     return redirect('/login')
 
@@ -68,7 +76,6 @@ def api_bid(request, id):
     user = User_Data.objects.filter(username__in=us)
     if request.method == 'POST':
         print(int(user[0].money), int(player[0].current_price))
-        print("Called")
         if not player[0].active:
             return JsonResponse({"Status": "Sorry, the player is not currently available for bidding", "code": 404})
         elif player[0].current_price != int(request.POST['value']):
@@ -88,9 +95,8 @@ def api_bid(request, id):
                 own[0].price = int(request.POST['value'])
                 own[0].user_id = user[0]
                 own[0].save(update_fields=['price', 'user_id'])
-                print("Send")
-                bid.timer = 10
-                return JsonResponse({"code": 200, "Status": "Success"})
+            bid.timer = timing['bid_time']
+            return JsonResponse({"code": 200, "Status": "Success"})
 
 
 @login_required(login_url='/login/')

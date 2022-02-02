@@ -2,14 +2,21 @@ import json
 from django.db import models
 import datetime
 from django.contrib.auth.models import User
+from django.contrib.sessions.models import Session
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 import time
 from threading import Thread
 
+timing = {
+    "bid_time": 30,
+    "cool_time": 90,
+    "notify_time": 30
+}
+
 
 class Bidder(Thread):
-    timer = 10
+    timer = timing['bid_time']
     player_id = 0
     state = False
     on_bid = False
@@ -22,7 +29,7 @@ class Bidder(Thread):
             time.sleep(1)
             self.timer = self.timer - 1
         self.on_bid = True
-        self.timer = 10
+        self.timer = timing['bid_time']
 
     def process(self):
         channel_layer = get_channel_layer()
@@ -30,7 +37,7 @@ class Bidder(Thread):
                                               f"be auction in 30 seconds.", 'player_id': self.player_id}
         async_to_sync(channel_layer.group_send)('Bidding_grp',
                                                 {'type': 'update', 'value': json.dumps(data)})
-        time.sleep(30)
+        time.sleep(timing['notify_time'])
         data = {"is_active": True, "message": f"Get Ready!! {Player.objects.filter(id=self.player_id)[0].name} is "
                                               f"under auction", 'player_id': self.player_id}
         async_to_sync(channel_layer.group_send)('Bidding_grp',
@@ -39,7 +46,6 @@ class Bidder(Thread):
         while self.timer != 0:
             time.sleep(1)
             self.timer = self.timer - 1
-            print(self.timer)
         Player.objects.filter(id=self.player_id).update(active=False)
         owner = Player_Owner.objects.filter(player_id__in=Player.objects.filter(id=self.player_id))
         if len(owner) != 0:
@@ -54,7 +60,7 @@ class Bidder(Thread):
                 'player_id': Player.objects.filter(id=self.player_id)[0].id}
         async_to_sync(channel_layer.group_send)('Bidding_grp',
                                                 {'type': 'update', 'value': json.dumps(data)})
-        self.timer = 100
+        self.timer = timing['notify_time']
         self.on_bid = False
         self.player_id = 0
 
@@ -97,7 +103,7 @@ class Player(models.Model):
     profile = models.TextField(null=True)
     name = models.CharField(max_length=50, default=None)
     odi_ranking = models.IntegerField(default=0, unique=True)
-    player_img = models.ImageField(upload_to='players/')
+    player_img = models.TextField(null=True)
     type = models.CharField(max_length=50, choices=types_of_player, default="")
     t20_ranking = models.IntegerField(default=0, unique=True)
     test_ranking = models.IntegerField(default=0, unique=True)
@@ -215,3 +221,7 @@ class Start_Bidding(models.Model):
             bid.start()
             bid.state = True
         super(Start_Bidding, self).save()
+
+
+class UserSession(models.Model):
+    user_acc = models.ForeignKey(User, on_delete=models.CASCADE)
