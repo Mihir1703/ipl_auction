@@ -223,5 +223,10 @@ class Start_Bidding(models.Model):
         super(Start_Bidding, self).save()
 
 
-class UserSession(models.Model):
-    user_acc = models.ForeignKey(User, on_delete=models.CASCADE)
+class LoggedInUser(models.Model):
+    user = models.OneToOneField(User, related_name='logged_in_user',on_delete=models.CASCADE)
+    # Session keys are 32 characters long
+    session_key = models.CharField(max_length=32, null=True, blank=True)
+
+    def __str__(self):
+        return self.user.username

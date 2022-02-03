@@ -1,5 +1,6 @@
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, user_logged_in
 from django.contrib.auth.decorators import login_required
+from django.dispatch import receiver
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
@@ -15,13 +16,6 @@ def login_user(request):
         password = request.POST['pass']
         user = authenticate(request, username=username, password=password)
         if user is not None:
-            u = User.objects.filter(username=username)
-            session = UserSession.objects.filter(user_acc__in=u)
-            if len(session) != 0:
-                messages = "Already a session is going on"
-                return render(request, "signin.html", {"message": messages})
-            else:
-                UserSession.objects.create(user_acc=u[0])
             login(request, user)
             return redirect('/')
         else:
@@ -33,9 +27,9 @@ def login_user(request):
 
 @login_required(login_url='/login/')
 def logout_user(request):
-    UserSession.objects.filter(user_acc__in=User.objects.filter(username=request.user)).delete()
     logout(request)
     return redirect('/login')
+
 
 
 def register_user(request):
