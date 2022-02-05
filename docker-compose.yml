@@ -4,14 +4,11 @@ services:
       container_name: django_server
       build: 
         context: esummit22
-      # environment:
-      #   - DB_HOST=rtiwala.postgres.database.azure.com
-      #   - DB_NAME=bot
-      #   - DB_USER=rtibot@rtiwala
-      #   - DB_PASS=AdiNil@1924
+      environment:
+        - DJANGO_SETTINGS_MODULE=ipl_auction.settings
       ports:
         - "80:8000"
-      command: bash -c "cd /app && python manage.py makemigrations && python manage.py migrate && gunicorn ipl_auction.wsgi:application --bind 0.0.0.0:8000"
+      command: bash -c "cd /app && python manage.py makemigrations && python manage.py migrate && daphne ipl_auction.asgi:application --bind=0.0.0.0:8000"
       depends_on:
         - db
     db:
