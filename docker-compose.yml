@@ -8,7 +8,7 @@ services:
         - DJANGO_SETTINGS_MODULE=ipl_auction.settings
       ports:
         - "80:8000"
-      command: bash -c "cd /app && python manage.py makemigrations && python manage.py migrate && daphne ipl_auction.asgi:application --bind=0.0.0.0:8000"
+      command: bash -c "cd /app && python manage.py makemigrations && python manage.py migrate && daphne ipl_auction.asgi:application --bind=0.0.0.0"
       depends_on:
         - db
     db:
