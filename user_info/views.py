@@ -1,6 +1,5 @@
-from django.contrib.auth import authenticate, login, logout, user_logged_in
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.dispatch import receiver
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
@@ -65,6 +64,8 @@ def index(request):
 
 
 def api_bid(request, id):
+    if not request.user.is_authenticated:
+        return JsonResponse({"Status": "Please login to take part in auction", "code": 404})
     player = Player.objects.filter(id=id)
     us = User.objects.filter(username=request.user)
     user = User_Data.objects.filter(username__in=us)

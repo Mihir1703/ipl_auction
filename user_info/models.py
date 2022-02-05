@@ -67,7 +67,6 @@ class Bidder(Thread):
     def run(self):
         players = Player.objects.all()
         for player in players:
-            Player.objects.filter(id=player.id).update(active=False)
             self.on_bid = True
             self.player_id = player.id
             print("Bidding start", player.id)
@@ -225,7 +224,6 @@ class Start_Bidding(models.Model):
 
 class LoggedInUser(models.Model):
     user = models.OneToOneField(User, related_name='logged_in_user',on_delete=models.CASCADE)
-    # Session keys are 32 characters long
     session_key = models.CharField(max_length=32, null=True, blank=True)
 
     def __str__(self):
