@@ -39,9 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_cleanup.apps.CleanupConfig',
     'user_info',
-    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -81,12 +79,12 @@ ASGI_APPLICATION = 'ipl_auction.asgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'ipl_auction',
-        'USER': 'root',
+        'USER': 'postgres',
         'PASSWORD': 'nilesh',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'HOST': 'db',
+        'PORT': '5432',
     }
 }
 
