@@ -197,7 +197,7 @@ class T20_stat(models.Model):
 
 
 class Test_stat(models.Model):
-    id = models.ForeignKey(Player, on_delete=models.CASCADE, primary_key=True)
+    id = models.OneToOneField(Player, on_delete=models.CASCADE, primary_key=True)
     test_5w = models.IntegerField(default=0)
     test_balls = models.IntegerField(default=0)
     test_ducks = models.IntegerField(default=0)
