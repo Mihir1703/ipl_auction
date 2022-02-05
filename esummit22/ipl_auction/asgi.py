@@ -17,8 +17,8 @@ from channels.routing import ProtocolTypeRouter, URLRouter
 from user_info.consumers import *
 
 pattern_url = [
-    path('player/<int:id>', PlayerConsumer.as_asgi()),
-    path('bid_start/', BiddingSignal.as_asgi())
+    path('ws/player/<int:id>', PlayerConsumer.as_asgi()),
+    path('ws/bid_start/', BiddingSignal.as_asgi())
 ]
 
 application = ProtocolTypeRouter({
