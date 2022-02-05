@@ -3,7 +3,7 @@ from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from .models import *
 import os
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'trial_socket.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ipl_auction.settings')
 
 
 class PlayerConsumer(AsyncJsonWebsocketConsumer):

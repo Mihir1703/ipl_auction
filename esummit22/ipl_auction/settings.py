@@ -33,15 +33,13 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'channels',
-    'user_info',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_cleanup.apps.CleanupConfig',
-    'rest_framework'
+    'user_info',
 ]
 
 MIDDLEWARE = [
@@ -81,12 +79,12 @@ ASGI_APPLICATION = 'ipl_auction.asgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'ipl_auction',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'USER': 'postgres',
+        'PASSWORD': 'nilesh',
+        'HOST': 'db',
+        'PORT': '5432',
     }
 }
 
