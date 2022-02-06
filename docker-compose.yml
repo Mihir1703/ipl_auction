@@ -6,8 +6,11 @@ services:
         context: esummit22
       environment:
         - DJANGO_SETTINGS_MODULE=ipl_auction.settings
-      ports:
-        - "80:8000"
+      expose:
+        - "8000"
+      volumes:
+        - static_volume:/app/staticfiles/
+
       command: bash -c "cd /app && python manage.py makemigrations && python manage.py migrate && daphne ipl_auction.asgi:application --bind=0.0.0.0"
       depends_on:
         - db
@@ -17,16 +20,17 @@ services:
         - POSTGRES_DB=ipl_auction
         - POSTGRES_USER=postgres
         - POSTGRES_PASSWORD=nilesh
-    # nginx:
-    #   image: nginx:latest
-    #   container_name: ng
-    #   ports:
-    #     - "443:443"
-    #     - "80:80"
-    #   volumes:
-    #     - ./config/nginx/:/etc/nginx/conf.d
-    #   depends_on:
-    #     - django
-    #     - db 
-    #     - redis
-
+    nginx:
+      image: nginx:latest
+      container_name: ng
+      ports:
+        - "443:443"
+        - "80:80"
+      volumes:
+        - ./nginx/config/:/etc/nginx/conf.d
+        - static_volume:/app/staticfiles/
+      depends_on:
+        - django
+        - db
+volumes:
+  static_volume:
