@@ -10,5 +10,7 @@ RUN pip3 install -r requirements.txt
 RUN pip3 install gunicorn
 VOLUME /app
 
+RUN python3 /app/manage.py collectstatic
+
 
 # CMD ["python3","/app/manage.py","runserver","0.0.0.0:8000"]
