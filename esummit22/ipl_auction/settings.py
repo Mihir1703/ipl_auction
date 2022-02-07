@@ -83,8 +83,8 @@ DATABASES = {
         'NAME': 'ipl_auction',
         'USER': 'postgres',
         'PASSWORD': 'nilesh',
-        'HOST': 'db',
-        'PORT': '5432',
+        'HOST': '',
+        'PORT': '5433',
     }
 }
 
