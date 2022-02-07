@@ -68,7 +68,8 @@ def api_bid(request, id):
         return JsonResponse({"Status": "Please login to take part in auction", "code": 404})
     player = Player.objects.filter(id=id)
     us = User.objects.filter(username=request.user)
-    user = User_Data.objects.filter(username__in=us)
+    user = User_Data.objects.filter(id__in=us)
+    print(user)
     if request.method == 'POST':
         print(int(user[0].money), int(player[0].current_price))
         if not player[0].active:
@@ -97,13 +98,13 @@ def api_bid(request, id):
 @login_required(login_url='/login/')
 def single(request, id):
     player = Player.objects.filter(id=id)
-    us = User.objects.filter(username=request.user)
     ipl = Ipl_stat.objects.filter(id__in=player)
     odi = Odi_stat.objects.filter(id__in=player)
     test = Test_stat.objects.filter(id__in=player)
     t20 = T20_stat.objects.filter(id__in=player)
     curr_user = Player_Owner.objects.filter(player_id__in=player)
-    username = User.objects.filter(username__in=curr_user)
+    user_data = User_Data.objects.filter(id__in=curr_user)
+    username = User.objects.filter(pk__in=user_data)
     owner = Player_Owner.objects.filter(player_id__in=player)
     if len(owner) == 0:
         owner = ""

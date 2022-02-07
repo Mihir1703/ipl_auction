@@ -123,7 +123,7 @@ class Player(models.Model):
 
 class User_Data(models.Model):
     id = models.AutoField(primary_key=True)
-    username = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
+    username = models.OneToOneField(User, on_delete=models.CASCADE, null=False)
     status = models.BooleanField(default=True)
     money = models.IntegerField(default=5000000)
 
@@ -134,7 +134,7 @@ class User_Data(models.Model):
 class Player_Owner(models.Model):
     id = models.AutoField(primary_key=True)
     player_id = models.OneToOneField(Player, on_delete=models.CASCADE, null=False)
-    user_id = models.ForeignKey(User_Data, on_delete=models.CASCADE, null=False)
+    user_id = models.OneToOneField(User_Data, on_delete=models.CASCADE, null=False)
     price = models.IntegerField(default=0)
 
     def save(self, *args, **kwargs):
