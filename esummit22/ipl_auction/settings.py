@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-#^3hqs!-7ww!q1!ifbgig&qc4zgog7d(dwafd7-!%=n%y%lec#
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-CSRF_TRUSTED_ORIGINS = ['http://localhost']
+CSRF_TRUSTED_ORIGINS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
@@ -83,8 +83,8 @@ DATABASES = {
         'NAME': 'ipl_auction',
         'USER': 'postgres',
         'PASSWORD': 'nilesh',
-        'HOST': '',
-        'PORT': '5433',
+        'HOST': 'db',
+        'PORT': '5432',
     }
 }
 
