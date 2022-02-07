@@ -65,7 +65,7 @@ def index(request):
 
 def api_bid(request, id):
     if not request.user.is_authenticated:
-        return JsonResponse({"Status": "Please login to take part in auction", "code": 404})
+        return JsonResponse({"Status": "Please login to take part in auction", "code": 201})
     player = Player.objects.filter(id=id)
     us = User.objects.filter(username=request.user)
     user = User_Data.objects.filter(username__in=us)
