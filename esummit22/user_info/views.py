@@ -68,11 +68,11 @@ def api_bid(request, id):
         return JsonResponse({"Status": "Please login to take part in auction", "code": 201})
     player = Player.objects.filter(id=id)
     us = User.objects.filter(username=request.user)
-    user = User_Data.objects.filter(id__in=us)
+    user = User_Data.objects.filter(username__in=us)
     print(user)
+    # return JsonResponse({"Status": len(user), "code": 201})
     if request.method == 'POST':
-        print(int(user[0].money), int(player[0].current_price))
-        if not player[0].active:
+        if not player[0].active:    
             return JsonResponse({"Status": "Sorry, the player is not currently available for bidding", "code": 404})
         elif player[0].current_price != int(request.POST['value']):
             return JsonResponse({"Status": "Someone Already have bidden on the price you have bidden.", "code": 404})
@@ -99,9 +99,6 @@ def api_bid(request, id):
 def single(request, id):
     player = Player.objects.filter(id=id)
     ipl = Ipl_stat.objects.filter(id__in=player)
-    odi = Odi_stat.objects.filter(id__in=player)
-    test = Test_stat.objects.filter(id__in=player)
-    t20 = T20_stat.objects.filter(id__in=player)
     curr_user = Player_Owner.objects.filter(player_id__in=player)
     user_data = User_Data.objects.filter(id__in=curr_user)
     username = User.objects.filter(pk__in=user_data)
@@ -115,7 +112,7 @@ def single(request, id):
     else:
         username = username[0].username
     return render(request, 'single_player.html',
-                  {"player": player, "ipl": ipl, "odi": odi, "test": test, "t20": t20, "user": username,
+                  {"player": player, "ipl": ipl, "user": username,
                    "purchase": owner})
 
 
