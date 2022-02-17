@@ -133,10 +133,15 @@ class Player_Owner(models.Model):
     def save(self, *args, **kwargs):
         super(Player_Owner, self).save(*args, **kwargs)
         pl = Player_Owner.objects.filter(id=self.id)
-        Player.objects.filter(id=pl[0].player_id.id).update(current_price=self.price + 1000000)
+        increment = 1000000
+        if self.price > 10000000:
+            increment = 2000000
+        elif self.price > 20000000:
+            increment = 4000000
+        Player.objects.filter(id=pl[0].player_id.id).update(current_price=self.price + increment)
         player = Player.objects.filter(id=pl[0].player_id.id)[0]
         channel_layer = get_channel_layer()
-        data = {"curr_price": self.price + 1000000, "base_price": self.price, "user": self.user_id.username.username}
+        data = {"curr_price": self.price + increment, "base_price": self.price, "user": self.user_id.username.username}
         async_to_sync(channel_layer.group_send)('player_%s' % str(player.id),
                                                 {'type': 'send_notification', 'value': json.dumps(data)})
 

@@ -2,86 +2,188 @@
 {% load static %}
 
 {% block body %}
-    <style>
-        .owl-item{
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-    </style>
-    <div class="hero-section style-2">
-        <div class="container">
-        </div>
-        <div class="bg_img hero-bg bottom_center"
-             data-background="{% static './assets/images/banner/hero-bg.png' %}"></div>
+<style>
+    .owl-item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+</style>
+<div class="hero-section style-2">
+    <div class="container">
     </div>
-    <section class="product-details padding-bottom mt--240 mt-lg--440">
-        <div class="container">
-            <div class="product-details-slider-top-wrapper" style="display: flex; justify-content: center;">
-                <div class="product-details-slider owl-theme owl-carousel" id="sync1" style="display: flex; justify-content: center;">
-                    <img src="{{ player.0.player_img }}" style="max-width: 800px; max-height: 600px;" alt="product">
-                    <!-- <div class="slide-top-item">
+    <div class="bg_img hero-bg bottom_center"
+        data-background="{% static './assets/images/banner/hero-bg.png' %}"></div>
+</div>
+<section class="product-details padding-bottom mt--240 mt-lg--440">
+    <div class="container">
+        <div class="product-details-slider-top-wrapper"
+            style="display: flex; justify-content: center;">
+            <div class="product-details-slider owl-theme owl-carousel"
+                id="sync1"
+                style="display: flex; justify-content: center;">
+                <img src="{{ player.0.player_img }}"
+                    style="max-width: 800px; max-height: 600px;"
+                    alt="product">
+                <!-- <div class="slide-top-item">
                         <div class="slide-inner">
                         </div>
                     </div> -->
-                </div>
             </div>
+        </div>
 
-            <div class="row mt-40-60-80">
-                <div class="col-lg-8">
-                    <div class="product-details-content">
-                        <div class="product-details-header">
-                            <h2 class="title">{{ player.0.name }}</h2>
-                            <ul>
-                                <li>Player ID: {{ player.0.id }}</li>
-                                <li>{{ player.0.country }}</li>
-                            </ul>
-                        </div>
-                        <ul class="price-table mb-30" style="padding-left: 30px!important;">
-                            <li class="header">
-                                <h5 class="current">Current Price</h5>
-                                <h3 class="price" id="change">₹{{ player.0.current_price }}</h3>
-                                {% if user %}
-                                    </li>
-                                    <li>
-                                        <h3></h3>
-                                        <h5 class="info" id="name">{{ user }}</h5>
-                                    </li>
-                                    <li>
-                                        {% else %}
-                                    </li>
-                                    <li>
-                                        <h3></h3>
-                                        <h5 class="info" id="name">{{ purchase }}</h5>
-                                    </li>
-                                    <li>
-                                {% endif %}
-                                <span class="details">Base Price</span>
-                                <h5 class="info" id="base_price">₹ {{ player.0.base_price }}</h5>
-                                </li>
+        <div class="row mt-40-60-80">
+            <div class="col-lg-8">
+                <div class="product-details-content">
+                    <div class="product-details-header">
+                        <h2 class="title">{{ player.0.name }}</h2>
+                        <ul>
+                            <li>Player ID: {{ player.0.id }}</li>
+                            <li>{{ player.0.country }}</li>
+                            <li style="font-size: 1.25rem;">{{ player.0.type }}</li>
                         </ul>
-                        <form class="product-bid-area" id="form-bid div-refresh" action="/player/{{ player.0.id }}/"
-                              method="post">
-                            <div class="product-bid-form">
-                                {% csrf_token %}
-                                <input type="hidden" name="value" id="bidding_price"
-                                       value="{{ player.0.current_price }}">
-                                <button type="submit" class="custom-button" id="bid">Submit a bid</button>
-                            </div>
-                        </form>
                     </div>
+                    <ul class="price-table mb-30"
+                        style="padding-left: 30px!important;">
+                        <li class="header">
+                            <h5 class="current">Current Price</h5>
+                            <h3 class="price"
+                                id="change">₹{{ player.0.current_price }}</h3>
+                            {% if user %}
+                        </li>
+                        <li>
+                            <h3></h3>
+                            <h5 class="info"
+                                id="name">{{ user }}</h5>
+                        </li>
+                        <li>
+                            {% else %}
+                        </li>
+                        <li>
+                            <h3></h3>
+                            <h5 class="info"
+                                id="name">{{ purchase }}</h5>
+                        </li>
+                        <li>
+                            {% endif %}
+                            <span class="details">Base Price</span>
+                            <h5 class="info"
+                                id="base_price">₹ {{ player.0.base_price }}</h5>
+                        </li>
+                    </ul>
+                    <form class="product-bid-area"
+                        id="form-bid div-refresh"
+                        action="/player/{{ player.0.id }}/"
+                        method="post">
+                        <div class="product-bid-form">
+                            {% csrf_token %}
+                            <input type="hidden"
+                                name="value"
+                                id="bidding_price"
+                                value="{{ player.0.current_price }}">
+                            <button type="submit"
+                                class="custom-button"
+                                id="bid">Submit a bid</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-    </section>
-    <script>
-        let bidding = false
-        let form = document.getElementsByTagName('form')[0];
-        form.addEventListener('submit', (event) => {
-            bidding = true
-            event.preventDefault()
-            {#console.log(document.getElementById('bidding_price'))#}
-            let curr_price = parseInt(document.getElementById('bidding_price').value);
+    </div>
+</section>
+<script>
+    let bidding = false
+    let form = document.getElementsByTagName('form')[0];
+    form.addEventListener('submit', (event) => {
+        bidding = true
+        event.preventDefault()
+        { #console.log(document.getElementById('bidding_price'))# }
+        let curr_price = parseInt(document.getElementById('bidding_price').value);
+        Swal.fire({
+            title: 'Are you sure?',
+            text: `you won't be able to revert this! Price : ${curr_price}`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Go for it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                ajax_lagao()
+            }
+            bidding = false;
+        })
+    })
+    let ajax_lagao = () => {
+        let curr_price = document.getElementById('change').innerText;
+        curr_price = parseInt(curr_price.slice(1));
+        if (parseInt(curr_price) !== parseInt($('#bidding_price').val())) {
+            return
+        }
+        $.ajax({
+            type: 'POST',
+            url: '/bid/{{ player.0.id }}',
+            data: {
+                value: curr_price,
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+            },
+            success: function (data) {
+                bidding = false;
+                if (data.code === 201) {
+                    Swal.fire({
+                        position: 'Login',
+                        icon: 'error',
+                        title: `${data.Status}`,
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        window.location.reload()
+                    })
+                }
+                else if (data.code === 404) {
+                    Swal.fire(
+                        'Try Again?',
+                        `${data.Status} Your Bid :  ${curr_price}`,
+                        'error'
+                    )
+                } else {
+                    Swal.fire(
+                        'Hurray!!',
+                        `You Have purchased player successfully at price ${curr_price}`,
+                        'success'
+                    )
+                }
+                console.log((new Date()).getSeconds(), (new Date()).getMilliseconds())
+            },
+            fail: function (data) {
+                swal("Try Again!!", `Some Error Occured.`, "error")
+            }
+        })
+    }
+</script>
+{% endblock %}
+
+{% block JS_Block %}
+<script>
+    let bid_end = false
+    if (bid_end) {
+        document.getElementById('bid').style.display = 'none'
+    }
+    let uri
+    uri = window.location.host;
+    uri = "wss://" + uri + "/ws/player/{{ player.0.id }}"
+    let connection2 = new WebSocket(uri)
+    window.onload = () => {
+    }
+    connection2.onclose = () => {
+        window.location.reload()
+    }
+    connection2.onmessage = (data) => {
+        console.log((new Date()).getSeconds(), (new Date()).getMilliseconds())
+        data = JSON.parse(data.data)
+        if (bidding === true) {
+            let curr_price = parseInt(data['curr_price']);
             Swal.fire({
                 title: 'Are you sure?',
                 text: `you won't be able to revert this! Price : ${curr_price}`,
@@ -96,96 +198,12 @@
                 }
                 bidding = false;
             })
-        })
-        let ajax_lagao = () => {
-            let curr_price = document.getElementById('change').innerText;
-            curr_price = parseInt(curr_price.slice(1));
-            if (parseInt(curr_price) !== parseInt($('#bidding_price').val())) {
-                return
-            }
-            $.ajax({
-                type: 'POST',
-                url: '/bid/{{ player.0.id }}',
-                data: {
-                    value: curr_price,
-                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
-                },
-                success: function (data) {
-                    bidding = false;
-                    if(data.code === 201){
-                        Swal.fire({
-                            position: 'Login',
-                            icon: 'error',
-                            title: `${data.Status}`,
-                            showConfirmButton: false,
-                            timer: 1500
-                        }).then(() => {
-                            window.location.reload()
-                        })
-                    }
-                    else if (data.code === 404) {
-                        Swal.fire(
-                            'Try Again?',
-                            `${data.Status} Your Bid :  ${curr_price}`,
-                            'error'
-                        )
-                    } else {
-                        Swal.fire(
-                            'Hurray!!',
-                            `You Have purchased player successfully at price ${curr_price}`,
-                            'success'
-                        )
-                    }
-                    console.log((new Date()).getSeconds(), (new Date()).getMilliseconds())
-                },
-                fail: function (data) {
-                    swal("Try Again!!", `Some Error Occured.`, "error")
-                }
-            })
         }
-    </script>
-{% endblock %}
-
-{% block JS_Block %}
-    <script>
-        let bid_end = false
-        if (bid_end) {
-            document.getElementById('bid').style.display = 'none'
-        }
-        let uri
-        uri = window.location.host;
-        uri = "wss://" + uri + "/ws/player/{{ player.0.id }}"
-        let connection2 = new WebSocket(uri)
-        window.onload = () => {
-        }
-        connection2.onclose = () => {
-            window.location.reload()
-        }
-        connection2.onmessage = (data) => {
-            console.log((new Date()).getSeconds(), (new Date()).getMilliseconds())
-            data = JSON.parse(data.data)
-            if (bidding === true) {
-                let curr_price = parseInt(data['curr_price']);
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: `you won't be able to revert this! Price : ${curr_price}`,
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Go for it!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        ajax_lagao()
-                    }
-                    bidding = false;
-                })
-            }
-            document.getElementById('bidding_price').value = String(data['curr_price'])
-            document.getElementById('change').innerText = "";
-            document.getElementById('change').innerText = '₹' + data['curr_price'];
-            document.getElementById('name').innerText = '';
-            document.getElementById('name').innerText = data['user']
-        }
-    </script>
+        document.getElementById('bidding_price').value = String(data['curr_price'])
+        document.getElementById('change').innerText = "";
+        document.getElementById('change').innerText = '₹' + data['curr_price'];
+        document.getElementById('name').innerText = '';
+        document.getElementById('name').innerText = data['user']
+    }
+</script>
 {% endblock %}
