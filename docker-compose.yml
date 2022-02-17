@@ -13,7 +13,7 @@ services:
         - ./esummit22:/app
         - ./nginx/config/certs:/app/certs
 
-      command: bash -c "cd /app && python manage.py makemigrations --merge && python manage.py migrate && daphne -e ssl:443:privateKey=certs/private-key.key:certKey=certs/certificate.crt ipl_auction.asgi:application"
+      command: bash -c "cd /app && python manage.py makemigrations && python manage.py migrate && daphne -e ssl:443:privateKey=certs/private-key.key:certKey=certs/certificate.crt ipl_auction.asgi:application"
       depends_on:
         - db
     db:
