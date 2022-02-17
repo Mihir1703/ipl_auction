@@ -2,6 +2,13 @@
 {% load static %}
 
 {% block body %}
+    <style>
+        .owl-item{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
     <div class="hero-section style-2">
         <div class="container">
         </div>
@@ -10,13 +17,13 @@
     </div>
     <section class="product-details padding-bottom mt--240 mt-lg--440">
         <div class="container">
-            <div class="product-details-slider-top-wrapper">
-                <div class="product-details-slider owl-theme owl-carousel" id="sync1">
-                    <div class="slide-top-item">
+            <div class="product-details-slider-top-wrapper" style="display: flex; justify-content: center;">
+                <div class="product-details-slider owl-theme owl-carousel" id="sync1" style="display: flex; justify-content: center;">
+                    <img src="{{ player.0.player_img }}" style="max-width: 800px; max-height: 600px;" alt="product">
+                    <!-- <div class="slide-top-item">
                         <div class="slide-inner">
-                            <img src="{{ player.0.player_img }}" alt="product">
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
 
@@ -64,20 +71,6 @@
                         </form>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="product-tab-menu-area mb-40-60 mt-70-100">
-            <div class="container">
-                <ul class="product-tab-menu nav nav-tabs">
-                    <li>
-                        <a href="#details" class="active" data-toggle="tab">
-                            <div class="thumb">
-                                <img src="{% static "./assets/images/product/tab1.png" %}" alt="product">
-                            </div>
-                            <div class="content">Description</div>
-                        </a>
-                    </li>
-                </ul>
             </div>
         </div>
     </section>
@@ -161,7 +154,7 @@
         }
         let uri
         uri = window.location.host;
-        uri = "wss://" + uri + "/ws/player/{{ player.0.id }}"
+        uri = "wss://" + uri + "/ws/player/{{ player.0.id }}/"
         let connection2 = new WebSocket(uri)
         window.onload = () => {
         }

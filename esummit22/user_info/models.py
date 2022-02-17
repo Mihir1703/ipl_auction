@@ -118,7 +118,7 @@ class User_Data(models.Model):
     id = models.AutoField(primary_key=True)
     username = models.OneToOneField(User, on_delete=models.CASCADE, null=False)
     status = models.BooleanField(default=True)
-    money = models.IntegerField(default=5000000)
+    money = models.IntegerField(default=1000000000)
 
     def __str__(self):
         return self.username.username
@@ -133,10 +133,10 @@ class Player_Owner(models.Model):
     def save(self, *args, **kwargs):
         super(Player_Owner, self).save(*args, **kwargs)
         pl = Player_Owner.objects.filter(id=self.id)
-        Player.objects.filter(id=pl[0].player_id.id).update(current_price=self.price + 50000)
+        Player.objects.filter(id=pl[0].player_id.id).update(current_price=self.price + 1000000)
         player = Player.objects.filter(id=pl[0].player_id.id)[0]
         channel_layer = get_channel_layer()
-        data = {"curr_price": self.price + 50000, "base_price": self.price, "user": self.user_id.username.username}
+        data = {"curr_price": self.price + 1000000, "base_price": self.price, "user": self.user_id.username.username}
         async_to_sync(channel_layer.group_send)('player_%s' % str(player.id),
                                                 {'type': 'send_notification', 'value': json.dumps(data)})
 
