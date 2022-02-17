@@ -6,7 +6,7 @@ from django.contrib.sessions.models import Session
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 import time
-from threading import Thread
+import threading
 
 timing = {
     "bid_time": 30,
@@ -15,14 +15,14 @@ timing = {
 }
 
 
-class Bidder(Thread):
+class Bidder(threading.Thread):
     timer = timing['bid_time']
     player_id = 0
     state = False
     on_bid = False
 
     def __int__(self):
-        Thread.__init__(self)
+        threading.Thread.__init__(self)
 
     def rest_timeout(self):
         while self.timer != 0:
@@ -67,7 +67,8 @@ class Bidder(Thread):
     def run(self):
         players = Player.objects.all()
         for player in players:
-            if len(Player_Owner.objects.filter(player_id__in=Player.objects.filter(id=player.id))):
+            print(player)
+            if len(Player_Owner.objects.filter(player_id__in=Player.objects.filter(id=player.id))) != 0:
                 continue
             self.on_bid = True
             self.player_id = player.id
@@ -76,7 +77,6 @@ class Bidder(Thread):
             Player.objects.filter(id=player.id).update(active=False)
             print("Time out")
             self.rest_timeout()
-
 
 bid = Bidder()
 
@@ -126,8 +126,8 @@ class User_Data(models.Model):
 
 class Player_Owner(models.Model):
     id = models.AutoField(primary_key=True)
-    player_id = models.OneToOneField(Player, on_delete=models.CASCADE, null=False)
-    user_id = models.OneToOneField(User_Data, on_delete=models.CASCADE, null=False)
+    player_id = models.OneToOneField(Player, on_delete=models.CASCADE, null=True)
+    user_id = models.ForeignKey(User_Data, on_delete=models.CASCADE)
     price = models.IntegerField(default=0)
 
     def save(self, *args, **kwargs):
@@ -144,11 +144,14 @@ class Player_Owner(models.Model):
 
 class Start_Bidding(models.Model):
     bid = models.BooleanField(default=False)
-
     def save(self, *args, **kwargs):
-        if self.bid:
-            bid.start()
-            bid.state = True
+        try:
+            if self.bid:
+                bid.start()
+                print("Bidding started")
+                bid.state = True
+        except Exception as e:
+            print(e)
         super(Start_Bidding, self).save()
 
 
