@@ -4,5 +4,4 @@ from .models import *
 admin_site.register(User_Data)
 admin_site.register(Player_Owner)
 admin_site.register(Player)
-admin_site.register(Ipl_stat)
 admin_site.register(Start_Bidding)

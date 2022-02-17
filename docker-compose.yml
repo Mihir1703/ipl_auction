@@ -22,7 +22,7 @@ services:
       environment:
         - POSTGRES_DB=ipl_auction
         - POSTGRES_USER=postgres
-        - POSTGRES_PASSWORD=nilesh  
+        - POSTGRES_PASSWORD=Mihir1703#  
     nginx:
       image: nginx:latest
       container_name: ng

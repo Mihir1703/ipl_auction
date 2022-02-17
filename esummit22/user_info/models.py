@@ -67,6 +67,8 @@ class Bidder(Thread):
     def run(self):
         players = Player.objects.all()
         for player in players:
+            if len(Player_Owner.objects.filter(player_id__in=Player.objects.filter(id=player.id))):
+                continue
             self.on_bid = True
             self.player_id = player.id
             print("Bidding start", player.id)
@@ -101,18 +103,12 @@ class Player(models.Model):
     debut_year = models.IntegerField(choices=YEAR_CHOICES, default=current_year)
     profile = models.TextField(null=True)
     name = models.CharField(max_length=50, default=None)
-    odi_ranking = models.IntegerField(default=0)
     player_img = models.TextField(null=True)
     type = models.CharField(max_length=50, choices=types_of_player, default="")
-    t20_ranking = models.IntegerField(default=0)
-    test_ranking = models.IntegerField(default=0)
     active = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         super(Player, self).save(*args, **kwargs)
-        if len(Ipl_stat.objects.filter(id=self)) != 0:
-            return
-        Ipl_stat.objects.create(id=self)
 
     def __str__(self):
         return self.name
@@ -137,28 +133,13 @@ class Player_Owner(models.Model):
     def save(self, *args, **kwargs):
         super(Player_Owner, self).save(*args, **kwargs)
         pl = Player_Owner.objects.filter(id=self.id)
-        Player.objects.filter(id=pl[0].player_id.id).update(current_price=self.price + 10000)
+        Player.objects.filter(id=pl[0].player_id.id).update(current_price=self.price + 50000)
         player = Player.objects.filter(id=pl[0].player_id.id)[0]
         channel_layer = get_channel_layer()
-        data = {"curr_price": self.price + 10000, "base_price": self.price, "user": self.user_id.username.username}
+        data = {"curr_price": self.price + 50000, "base_price": self.price, "user": self.user_id.username.username}
         async_to_sync(channel_layer.group_send)('player_%s' % str(player.id),
                                                 {'type': 'send_notification', 'value': json.dumps(data)})
 
-
-class Ipl_stat(models.Model):
-    id = models.OneToOneField(Player, on_delete=models.CASCADE, primary_key=True)
-    ipl_3w = models.IntegerField(default=0)
-    ipl_balls = models.IntegerField(default=0)
-    ipl_ducks = models.IntegerField(default=0)
-    ipl_economy = models.IntegerField(default=0)
-    ipl_fours = models.IntegerField(default=0)
-    ipl_six = models.IntegerField(default=0)
-    ipl_runs = models.IntegerField(default=0)
-    ipl_matches = models.IntegerField(default=0)
-    ipl_wickets = models.IntegerField(default=0)
-
-    def __str__(self):
-        return self.id.name
 
 
 class Start_Bidding(models.Model):

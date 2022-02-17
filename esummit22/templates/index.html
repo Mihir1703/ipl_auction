@@ -195,7 +195,7 @@
                         />
                     </div>
                     <div class="title-area">
-                        <h2 class="title">Bastman</h2>
+                        <h2 class="title">Players available for Auction.</h2>
                         <p>
                             Click on view all to see all the batsman available in auction
                         </p>
@@ -204,164 +204,11 @@
                 <a href="/player/batsman" class="normal-button">View All</a>
             </div>
             <div class="row justify-content-center mb-30-none">
-                {% for i in Batsman %}
+                {% for i in Players %}
                     <div class="col-sm-10 col-md-6 col-lg-4">
                         <div class="auction-item-2">
                             <div class="auction-thumb">
                                 <a href="#0"
-                                ><img
-                                        src="{{ i.player_img }}"
-                                        alt="car"
-                                        height="200px"
-                                        width="200px"
-                                /></a>
-                                <a href="#0" class="bid"><i class="flaticon-auction"></i></a>
-                            </div>
-                            <div class="auction-content">
-                                <h6 class="title">
-                                    <a href="#0"
-                                    >
-                                        <div style="text-align: center;">{{ i.name }}</div>
-                                    </a
-                                    >
-                                </h6>
-                            </div>
-                            <div class="text-center">
-                                <a href="/player/{{ i.id }}" class="custom-button">View Profile</a>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-        <br>
-        <br>
-        <div class="container">
-            <div class="section-header-3">
-                <div class="left">
-                    <div class="thumb">
-                        <img
-                                src="{% static './assets/images/header-icons/02.png' %}"
-                                alt="header-icons"
-                        />
-                    </div>
-                    <div class="title-area">
-                        <h2 class="title">Bowler</h2>
-                        <p>
-                            Click on view all to see all the bowler available in auction
-                        </p>
-                    </div>
-                </div>
-                <a href="/player/bowler" class="normal-button">View All</a>
-            </div>
-            <div class="row justify-content-center mb-30-none">
-                {% for i in Bowler %}
-                    <div class="col-sm-10 col-md-6 col-lg-4">
-                        <div class="auction-item-2">
-                            <div class="auction-thumb">
-                                <a href="./product-details.html"
-                                ><img
-                                        src="{{ i.player_img }}"
-                                        alt="car"
-                                        height="200px"
-                                        width="200px"
-                                /></a>
-                                <a href="#0" class="bid"><i class="flaticon-auction"></i></a>
-                            </div>
-                            <div class="auction-content">
-                                <h6 class="title">
-                                    <a href="#0"
-                                    >
-                                        <div style="text-align: center;">{{ i.name }}</div>
-                                    </a
-                                    >
-                                </h6>
-                            </div>
-                            <div class="text-center">
-                                <a href="/player/{{ i.id }}" class="custom-button">View Profile</a>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-        <br>
-        <br>
-        <div class="container">
-            <div class="section-header-3">
-                <div class="left">
-                    <div class="thumb">
-                        <img
-                                src="{% static './assets/images/header-icons/03.png' %}"
-                                alt="header-icons"
-                        />
-                    </div>
-                    <div class="title-area">
-                        <h2 class="title">Wicket Keeper</h2>
-                        <p>
-                            Click on view all to see all the wicketkeeper available in auction
-                        </p>
-                    </div>
-                </div>
-                <a href="/player/keeper" class="normal-button">View All</a>
-            </div>
-            <div class="row justify-content-center mb-30-none">
-                {% for i in WicketKeeper %}
-                    <div class="col-sm-10 col-md-6 col-lg-4">
-                        <div class="auction-item-2">
-                            <div class="auction-thumb">
-                                <a href="#0"
-                                ><img
-                                        src="{{ i.player_img }}"
-                                        alt="car"
-                                        height="200px"
-                                        width="200px"
-                                /></a>
-                                <a href="#0" class="bid"><i class="flaticon-auction"></i></a>
-                            </div>
-                            <div class="auction-content">
-                                <h6 class="title">
-                                    <a href="#0"
-                                    >
-                                        <div style="text-align: center;">{{ i.name }}</div>
-                                    </a
-                                    >
-                                </h6>
-                            </div>
-                            <div class="text-center">
-                                <a href="/player/{{ i.id }}" class="custom-button">View Profile</a>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-        <br>
-        <br>
-        <div class="container">
-            <div class="section-header-3">
-                <div class="left">
-                    <div class="thumb">
-                        <img
-                                src="{% static './assets/images/header-icons/04.png' %}"
-                                alt="header-icons"
-                        />
-                    </div>
-                    <div class="title-area">
-                        <h2 class="title">All Rounder</h2>
-                        <p>
-                            Click on view all to see all the allrounder available in auction
-                        </p>
-                    </div>
-                </div>
-                <a href="/player/allrounder" class="normal-button">View All</a>
-            </div>
-            <div class="row justify-content-center mb-30-none">
-                {% for i in AllRounder %}
-                    <div class="col-sm-10 col-md-6 col-lg-4">
-                        <div class="auction-item-2">
-                            <div class="auction-thumb">
-                                <a href="./product-details.html"
                                 ><img
                                         src="{{ i.player_img }}"
                                         alt="car"

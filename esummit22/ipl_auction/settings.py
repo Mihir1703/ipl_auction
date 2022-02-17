@@ -82,8 +82,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'ipl_auction',
         'USER': 'postgres',
-        'PASSWORD': 'nilesh',
-        'HOST': 'db',
+        'PASSWORD': 'Mihir1703#',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }

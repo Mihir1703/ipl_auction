@@ -51,16 +51,12 @@ def register_user(request):
 
 @login_required(login_url='/login/')
 def index(request):
-    data_bat = Player.objects.filter(type='Batsman').order_by('-t20_ranking')[:3]
-    data_bowl = Player.objects.filter(type='Bowler').order_by('-t20_ranking')[:3]
-    data_wc = Player.objects.filter(type='Wicket Keeper').order_by('-t20_ranking')[:3]
-    data_all = Player.objects.filter(type='All Rounder').order_by('-t20_ranking')[:3]
+    data_all = Player.objects.all()[:3]
     in_auction = Player_Owner.objects.all()
     in_auction = Player.objects.filter(id__in=in_auction).filter(active=True)[:1]
     print(request.user)
     return render(request, 'index.html',
-                  {'username': request.user.get_full_name(), 'Batsman': data_bat, 'Bowler': data_bowl,
-                   'WicketKeeper': data_wc, 'AllRounder': data_all, 'active': in_auction})
+                  {'username': request.user.get_full_name(), 'Players': data_all, 'active': in_auction})
 
 
 def api_bid(request, id):
@@ -70,7 +66,6 @@ def api_bid(request, id):
     us = User.objects.filter(username=request.user)
     user = User_Data.objects.filter(username__in=us)
     print(user)
-    # return JsonResponse({"Status": len(user), "code": 201})
     if request.method == 'POST':
         if not player[0].active:    
             return JsonResponse({"Status": "Sorry, the player is not currently available for bidding", "code": 404})
@@ -98,11 +93,11 @@ def api_bid(request, id):
 @login_required(login_url='/login/')
 def single(request, id):
     player = Player.objects.filter(id=id)
-    ipl = Ipl_stat.objects.filter(id__in=player)
     curr_user = Player_Owner.objects.filter(player_id__in=player)
     user_data = User_Data.objects.filter(id__in=curr_user)
     username = User.objects.filter(pk__in=user_data)
     owner = Player_Owner.objects.filter(player_id__in=player)
+    print(owner)
     if len(owner) == 0:
         owner = ""
     else:
@@ -112,7 +107,7 @@ def single(request, id):
     else:
         username = username[0].username
     return render(request, 'single_player.html',
-                  {"player": player, "ipl": ipl, "user": username,
+                  {"player": player, "user": username,
                    "purchase": owner})
 
 
@@ -121,7 +116,8 @@ def user(request):
     user_info = User.objects.filter(username=request.user)
     us = User_Data.objects.filter(username__in=user_info)
     owned = Player_Owner.objects.filter(user_id__in=us)
-    owned_players = Player.objects.filter(id__in=owned)
+    owned_players = Player.objects.filter(id__in=owned.values('player_id'))
+    print(owned_players,user_info,us,owned)
     return render(request, 'user.html', {'user': us, 'Player': owned_players, })
 
 
