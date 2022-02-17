@@ -118,7 +118,7 @@ class User_Data(models.Model):
     id = models.AutoField(primary_key=True)
     username = models.OneToOneField(User, on_delete=models.CASCADE, null=False)
     status = models.BooleanField(default=True)
-    money = models.IntegerField(default=1000000000)
+    money = models.IntegerField(default=2500000000)
 
     def __str__(self):
         return self.username.username
