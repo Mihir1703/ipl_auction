@@ -10,8 +10,8 @@ import threading
 
 timing = {
     "bid_time": 12,
-    "cool_time": 60,
-    "notify_time": 60
+    "cool_time": 30,
+    "notify_time": 30
 }
 
 
