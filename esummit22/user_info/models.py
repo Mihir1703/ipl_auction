@@ -60,6 +60,8 @@ class Bidder(threading.Thread):
         data = {"is_active": False, "message": f"Cool Down!! {Player.objects.filter(id=self.player_id)[0].name} has "
                                                f"been sold out to {'Nobody' if len(owner) == 0 else owner[0].user_id.username}, next auction after 1 minutes!",
                 'player_id': Player.objects.filter(id=self.player_id)[0].id}
+        if len(owner) == 0:
+            Done.objects.create(player_id=Player.objects.filter(id=self.player_id)[0])
         async_to_sync(channel_layer.group_send)('Bidding_grp',
                                                 {'type': 'update', 'value': json.dumps(data)})
         self.timer = timing['notify_time']
@@ -70,7 +72,7 @@ class Bidder(threading.Thread):
         players = Player.objects.all().order_by('id')
         for player in players:
             print(player)
-            if len(Player_Owner.objects.filter(player_id__in=Player.objects.filter(id=player.id))) != 0:
+            if len(Player_Owner.objects.filter(player_id__in=Player.objects.filter(id=player.id))) != 0 or len(Done.objects.filter(player_id__in=Player.objects.filter(id=player.id))) != 0:
                 continue
             self.on_bid = True
             self.player_id = player.id
@@ -168,3 +170,6 @@ class LoggedInUser(models.Model):
 
     def __str__(self):
         return self.user.username
+
+class Done(models.Model):
+    player_id = models.OneToOneField(Player, on_delete=models.CASCADE)
