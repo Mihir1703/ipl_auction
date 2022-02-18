@@ -212,7 +212,15 @@
         document.getElementById('name').innerText = data['user']
     }
     function humanize(num) {
-        return Math.abs(num) > 999 ? Math.sign(num) * ((Math.abs(num) / 1000).toFixed(1)) + 'k' : Math.sign(num) * Math.abs(num)
+        if(num > 1000000){
+            return (num/1000000).toFixed(2) + 'M'
+        }
+        else if(num > 1000){
+            return (num/1000).toFixed(2) + 'K'
+        }
+        else{
+            return num
+        }
     }
     window.onload = () => {
         let d = 0
