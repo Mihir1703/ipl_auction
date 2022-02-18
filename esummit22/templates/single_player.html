@@ -47,7 +47,7 @@
                     <ul class="price-table mb-30"
                         style="padding-left: 30px!important;">
                         <li class="header">
-                            <h5 class="current">Current Price</h5>
+                            <h5 class="current">Next Bid Price</h5>
                             <h3 class="price"
                                 id="change">₹{{ player.0.current_price }}</h3>
                             {% if user %}
@@ -150,7 +150,7 @@
                 } else {
                     Swal.fire(
                         'Hurray!!',
-                        `You Have purchased player successfully at price ${curr_price}`,
+                        `You Have placed bid at price ${curr_price}`,
                         'success'
                     )
                 }

@@ -9,7 +9,7 @@ import time
 import threading
 
 timing = {
-    "bid_time": 30,
+    "bid_time": 12,
     "cool_time": 90,
     "notify_time": 30
 }
@@ -28,6 +28,7 @@ class Bidder(threading.Thread):
         while self.timer != 0:
             time.sleep(1)
             self.timer = self.timer - 1
+            print(self.timer)
         self.on_bid = True
         self.timer = timing['bid_time']
 
@@ -46,6 +47,7 @@ class Bidder(threading.Thread):
         while self.timer != 0:
             time.sleep(1)
             self.timer = self.timer - 1
+            print(self.timer)
         Player.objects.filter(id=self.player_id).update(active=False)
         owner = Player_Owner.objects.filter(player_id__in=Player.objects.filter(id=self.player_id))
         if len(owner) != 0:
@@ -133,8 +135,10 @@ class Player_Owner(models.Model):
     def save(self, *args, **kwargs):
         super(Player_Owner, self).save(*args, **kwargs)
         pl = Player_Owner.objects.filter(id=self.id)
-        increment = 1000000
-        if self.price > 10000000:
+        increment = 500000
+        if 10000000 < self.price < 40000000:
+            increment = 2000000
+        elif 40000000 < self.price:
             increment = 2500000
         Player.objects.filter(id=pl[0].player_id.id).update(current_price=self.price + increment)
         player = Player.objects.filter(id=pl[0].player_id.id)[0]

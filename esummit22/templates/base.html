@@ -18,16 +18,16 @@
     <link rel="stylesheet" href="{% static './assets/css/jquery-ui.min.css' %} "/>
     <link rel="stylesheet" href="{% static './assets/css/new.css' %}">
     <script defer src="{% static './assets/js/ripple.js' %}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
             integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="{% static './assets/css/main.css' %} "/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
     <!-- Compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Recursive&display=swap" rel="stylesheet">
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link href="http://fonts.googleapis.com/css2?family=Recursive&display=swap" rel="stylesheet">
     <link
             rel="shortcut icon"
             href="{% static 'assets/images/favicon.png' %} "
@@ -73,7 +73,7 @@
             <div class="container">
                 <div class="newslater-area">
                     <div class="newslater-thumb">
-                        <img src="https://esummit.ecellnitb.com/assets/img/logo/E-SUMMIT%20LOGO-min.png" alt="footer"
+                        <img src="http://esummit.ecellnitb.com/assets/img/logo/E-SUMMIT%20LOGO-min.png" alt="footer"
                              width="350px"/>
                     </div>
                     <div class="newslater-content">
@@ -103,13 +103,13 @@
                             <h5 class="title">We're Here to Help</h5>
                             <ul class="links-list">
                                 <li>
-                                    <a href="https://www.ecellnitb.com/e_summit_2021/ipl.html">Rules</a>
+                                    <a href="http://www.ecellnitb.com/e_summit_2021/ipl.html">Rules</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ecellnitb.com/e_summit_2021/ipl.html">Contact Us</a>
+                                    <a href="http://www.ecellnitb.com/e_summit_2021/ipl.html">Contact Us</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ecellnitb.com/e_summit_2021/ipl.html">Help & FAQ</a>
+                                    <a href="http://www.ecellnitb.com/e_summit_2021/ipl.html">Help & FAQ</a>
                                 </li>
                             </ul>
                         </div>
@@ -141,18 +141,18 @@
                             </ul>
                             <ul class="social-icons">
                                 <li>
-                                    <a href="https://www.facebook.com/ecellnitbhopal/" class="active"
+                                    <a href="http://www.facebook.com/ecellnitbhopal/" class="active"
                                     ><i class="fab fa-facebook-f"></i
                                     ></a>
                                 </li>
                                 <li>
-                                    <a href="https://twitter.com/ecell_nitb"><i class="fab fa-twitter"></i></a>
+                                    <a href="http://twitter.com/ecell_nitb"><i class="fab fa-twitter"></i></a>
                                 </li>
                                 <li>
-                                    <a href="https://www.instagram.com/ecell_nitb"><i class="fab fa-instagram"></i></a>
+                                    <a href="http://www.instagram.com/ecell_nitb"><i class="fab fa-instagram"></i></a>
                                 </li>
                                 <li>
-                                    <a href="https://in.linkedin.com/company/ecell-manit"><i
+                                    <a href="http://in.linkedin.com/company/ecell-manit"><i
                                             class="fab fa-linkedin-in"></i></a>
                                 </li>
                             </ul>
@@ -166,9 +166,9 @@
                 <div class="copyright-area">
                     <div class="footer-bottom-wrapper">
                         <div class="logo">
-                            <a href="https://esummit.ecellnitb.com/"
+                            <a href="http://esummit.ecellnitb.com/"
                             ><img
-                                    src="https://esummit.ecellnitb.com/assets/img/logo/E-SUMMIT%20LOGO-min.png"
+                                    src="http://esummit.ecellnitb.com/assets/img/logo/E-SUMMIT%20LOGO-min.png"
                                     alt="logo"
                                     height="200px"
                             /></a>
@@ -176,7 +176,7 @@
                         <ul class="gateway-area">
                             <li>
                                 <p style="color: white;">
-                                    &copy; Copyright 2020 <a href="https://ecellnitb.com/" style="color: black;">E-CELL
+                                    &copy; Copyright 2020 <a href="http://ecellnitb.com/" style="color: black;">E-CELL
                                     MANIT</a> By
                                     <a style="color: black;" href="mailto:mihirwaykole1703@yahoo.com">Mihir Waykole</a>&
                                     <a style="color: black;" href="#0">Nilesh Singh</a>
@@ -208,7 +208,7 @@
         })
     }
     connection.onclose = () => {
-        window.location.reload()
+        window.location.reload()    
     }
     connection.onmessage = (data) => {
         data = JSON.parse(data.data)
@@ -220,12 +220,8 @@
                 showCancelButton: false,
                 confirmButtonColor: '#3085d6',
                 confirmButtonText: 'Go to Auction!',
-                timer: 6000
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.replace('https://' + window.location.host + '/player/' + data['player_id'])
-                    return
-                }
+                timer: 4000
+            }).then(() => {
                 window.location.replace('https://' + window.location.host + '/player/' + data['player_id'])
             })
         } else {
