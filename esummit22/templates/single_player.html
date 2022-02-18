@@ -103,8 +103,8 @@
     form.addEventListener('submit', (event) => {
         bidding = true
         event.preventDefault()
-        { #console.log(document.getElementById('bidding_price'))# }
         let curr_price = parseInt(document.getElementById('bidding_price').value);
+        console.log(curr_price)
         Swal.fire({
             title: 'Are you sure?',
             text: `you won't be able to revert this! Price : ${curr_price}`,
@@ -123,7 +123,8 @@
     let ajax_lagao = () => {
         let curr_price = document.getElementById('change').innerText;
         curr_price = parseInt(curr_price.slice(1));
-        if (parseInt(curr_price) !== parseInt($('#bidding_price').val())) {
+        console.log(curr_price,parseInt($('#bidding_price').val()));
+        if(parseInt(curr_price) !== parseInt($('#bidding_price').val())) {
             return
         }
         $.ajax({
