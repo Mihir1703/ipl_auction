@@ -172,7 +172,7 @@
         }
         let uri
         uri = window.location.host;
-        uri = "ws://" + uri + "/ws/player/{{ player.0.id }}"
+        uri = "wss://" + uri + "/ws/player/{{ player.0.id }}"
         let connection2 = new WebSocket(uri)
         window.onload = () => {
         }
