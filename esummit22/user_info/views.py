@@ -60,6 +60,7 @@ def index(request):
 
 
 def api_bid(request, id):
+    print(request.user)
     if not request.user.is_authenticated:
         return JsonResponse({"Status": "Please login to take part in auction", "code": 201})
     player = Player.objects.filter(id=id)
