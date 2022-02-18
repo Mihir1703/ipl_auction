@@ -96,11 +96,11 @@ types_of_player = (
 
 class Player(models.Model):
     id = models.AutoField(primary_key=True)
-    base_price = models.BigIntegerField(default=0)
+    base_price = models.IntegerField(default=0)
     batting_style = models.CharField(max_length=100, default="", choices=batting_style_option)
     country = models.CharField(max_length=20, default="India")
-    current_price = models.BigIntegerField(default=0)
-    debut_year = models.BigIntegerField(choices=YEAR_CHOICES, default=current_year)
+    current_price = models.IntegerField(default=0)
+    debut_year = models.IntegerField(choices=YEAR_CHOICES, default=current_year)
     profile = models.TextField(null=True)
     name = models.CharField(max_length=50, default=None)
     player_img = models.TextField(null=True)
@@ -118,7 +118,7 @@ class User_Data(models.Model):
     id = models.AutoField(primary_key=True)
     username = models.OneToOneField(User, on_delete=models.CASCADE, null=False)
     status = models.BooleanField(default=True)
-    money = models.BigIntegerField(default=2500000000)
+    money = models.IntegerField(default=1000000000)
 
     def __str__(self):
         return self.username.username
@@ -128,16 +128,14 @@ class Player_Owner(models.Model):
     id = models.AutoField(primary_key=True)
     player_id = models.OneToOneField(Player, on_delete=models.CASCADE, null=True)
     user_id = models.ForeignKey(User_Data, on_delete=models.CASCADE)
-    price = models.BigIntegerField(default=0)
+    price = models.IntegerField(default=0)
 
     def save(self, *args, **kwargs):
         super(Player_Owner, self).save(*args, **kwargs)
         pl = Player_Owner.objects.filter(id=self.id)
         increment = 1000000
         if self.price > 10000000:
-            increment = 2000000
-        elif self.price > 20000000:
-            increment = 4000000
+            increment = 2500000
         Player.objects.filter(id=pl[0].player_id.id).update(current_price=self.price + increment)
         player = Player.objects.filter(id=pl[0].player_id.id)[0]
         channel_layer = get_channel_layer()

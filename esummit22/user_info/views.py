@@ -63,7 +63,7 @@ def api_bid(request, id):
     if not request.user.is_authenticated:
         return JsonResponse({"Status": "Please login to take part in auction", "code": 201})
     player = Player.objects.filter(id=id)
-    print(player)
+    print(player,request.user)
     us = User.objects.filter(username=request.user)
     user = User_Data.objects.filter(username__in=us)
     print(user)
