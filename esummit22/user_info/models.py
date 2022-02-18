@@ -58,7 +58,7 @@ class Bidder(threading.Thread):
         else:
             pass
         data = {"is_active": False, "message": f"Cool Down!! {Player.objects.filter(id=self.player_id)[0].name} has "
-                                               f"been sold out to {'Nobody' if len(owner) == 0 else owner[0].user_id.username}, next auction after 1 minutes!",
+                                               f"been sold out to {'Nobody' if len(owner) == 0 else owner[0].user_id.username}, next auction after 15 seconds",
                 'player_id': Player.objects.filter(id=self.player_id)[0].id}
         if len(owner) == 0:
             Done.objects.create(player_id=Player.objects.filter(id=self.player_id)[0])
