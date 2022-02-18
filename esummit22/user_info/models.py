@@ -58,7 +58,7 @@ class Bidder(threading.Thread):
         else:
             pass
         data = {"is_active": False, "message": f"Cool Down!! {Player.objects.filter(id=self.player_id)[0].name} has "
-                                               f"been sold out to {'Nobody' if len(owner) == 0 else owner[0].user_id.username}, next auction after 2 minutes!",
+                                               f"been sold out to {'Nobody' if len(owner) == 0 else owner[0].user_id.username}, next auction after 1 minutes!",
                 'player_id': Player.objects.filter(id=self.player_id)[0].id}
         async_to_sync(channel_layer.group_send)('Bidding_grp',
                                                 {'type': 'update', 'value': json.dumps(data)})
