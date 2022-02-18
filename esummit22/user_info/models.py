@@ -67,7 +67,7 @@ class Bidder(threading.Thread):
         self.player_id = 0
 
     def run(self):
-        players = Player.objects.all()
+        players = Player.objects.all().order_by('id')
         for player in players:
             print(player)
             if len(Player_Owner.objects.filter(player_id__in=Player.objects.filter(id=player.id))) != 0:

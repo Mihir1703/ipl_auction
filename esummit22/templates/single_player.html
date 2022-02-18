@@ -48,33 +48,33 @@
                         style="padding-left: 30px!important;">
                         <li class="header">
                             <h5 class="current">Next Bid Price</h5>
-                            <h3 class="price"
-                                id="change">₹{{ player.0.current_price }}</h3>
+                            <div style="display: flex; align-items: flex-start; justify-content: end;">
+                                <h3 class="price"
+                                id="change">₹{{ player.0.current_price }}                                
+                            </h3>
+                            <h8 class="price"
+                                    id="human">{{ player.0.current_price }}</h8>
+                            </div>
                             {% if user %}
                         </li>
-                                <h3></h3>
-                                <h5 class="info"
-                                    id="name">{{ user }}</h5>
-                            </li>
-                            <li>
-                                {% else %}
-                            </li>
-                            <li>
-                                <h3></h3>
-                                <h5 class="info"
-                                    id="name">{{ purchase }}</h5>
-                            </li>
-                            <li>
-                                {% endif %}
-                                <span class="details">Base Price</span>
-                                <h5 class="info"
-                                    id="base_price">₹ {{ player.0.base_price }}</h5>
-                            </li>
-                            <div style="display: flex; flex-direction: row; justify-content: space-between;">
-                                <h4 class="price">Next Bidding Price : </h4>
-                                <h5 class="price"
-                                id="human">{{ player.0.current_price }}</h5>
-                            </div>
+                        <h3></h3>
+                        <h5 class="info"
+                            id="name">{{ user }}</h5>
+                        </li>
+                        <li>
+                            {% else %}
+                        </li>
+                        <li>
+                            <h3></h3>
+                            <h5 class="info"
+                                id="name">{{ purchase }}</h5>
+                        </li>
+                        <li>
+                            {% endif %}
+                            <span class="details">Base Price</span>
+                            <h5 class="info"
+                                id="base_price">₹ {{ player.0.base_price }}</h5>
+                        </li>
                         </>
                     </ul>
                     <form class="product-bid-area"
@@ -212,16 +212,16 @@
         document.getElementById('name').innerText = data['user']
     }
     function humanize(num) {
-    return Math.abs(num) > 999 ? Math.sign(num)*((Math.abs(num)/1000).toFixed(1)) + 'k' : Math.sign(num)*Math.abs(num)
-}
+        return Math.abs(num) > 999 ? Math.sign(num) * ((Math.abs(num) / 1000).toFixed(1)) + 'k' : Math.sign(num) * Math.abs(num)
+    }
     window.onload = () => {
         let d = 0
-        try{
+        try {
             d = parseInt(document.getElementById('human').innerText)
             console.log(d)
             document.getElementById('human').innerText = humanize(d)
-        }catch(err){    
-            
+        } catch (err) {
+
         }
     }
 </script>
