@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.humanize',
     'django.contrib.staticfiles',
     'user_info',
 ]
@@ -83,7 +84,7 @@ DATABASES = {
         'NAME': 'ipl_auction',
         'USER': 'postgres',
         'PASSWORD': 'Mihir1703#',
-        'HOST': 'db',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }
