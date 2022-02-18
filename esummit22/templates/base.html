@@ -193,7 +193,7 @@
 <script>
     let url
     url = window.location.host;
-    url = "ws://" + url + "/ws/bid_start/"
+    url = "wss://" + url + "/ws/bid_start/"
     let connection = new WebSocket(url)
     connection.onload = (data) => {
         if (data === undefined) {
