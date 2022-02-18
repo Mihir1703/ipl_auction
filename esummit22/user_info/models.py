@@ -9,7 +9,7 @@ import time
 import threading
 
 timing = {
-    "bid_time": 12,
+    "bid_time": 20,
     "cool_time": 15,
     "notify_time": 30
 }
@@ -138,7 +138,7 @@ class Player_Owner(models.Model):
         super(Player_Owner, self).save(*args, **kwargs)
         pl = Player_Owner.objects.filter(id=self.id)
         increment = 500000
-        if 10000000 < self.price < 40000000:
+        if 10000000 <= self.price < 40000000:
             increment = 2000000
         elif 40000000 < self.price:
             increment = 2500000

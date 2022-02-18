@@ -205,6 +205,7 @@
                 bidding = false;
             })
         }
+        document.getElementById('base_price').innerText = String(document.getElementById('bidding_price').value)
         document.getElementById('bidding_price').value = String(data['curr_price'])
         document.getElementById('human').value = humanize(parseInt(data['curr_price']))
         document.getElementById('change').innerText = "";

@@ -117,10 +117,9 @@ def single(request, id):
 def user(request):
     user_info = User.objects.filter(username=request.user)
     us = User_Data.objects.filter(username__in=user_info)
-    owned = Player_Owner.objects.filter(user_id__in=us)
-    owned_players = Player.objects.filter(id__in=owned.values('player_id'))
-    print(owned_players,user_info,us,owned)
-    return render(request, 'user.html', {'user': us, 'Player': owned_players, })
+    owned = Player_Owner.objects.raw("select * from public.user_info_player_owner JOIN public.user_info_player on public.user_info_player_owner.player_id_id = public.user_info_player.id where user_id_id = '%s'", [us[0].id])
+    print(owned[0])
+    return render(request, 'user.html', {'user': us, 'Player': owned, })
 
 
 def skill(request, tag):
