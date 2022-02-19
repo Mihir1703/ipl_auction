@@ -42,6 +42,8 @@
                             <li>Player ID: {{ player.0.id }}</li>
                             <li>{{ player.0.country }}</li>
                             <li style="font-size: 1.25rem;">{{ player.0.type }}</li>
+                            <li style="font-size: 1.25rem;"
+                                id="timer">Not yet Started</li>
                         </ul>
                     </div>
                     <ul class="price-table mb-30"
@@ -50,9 +52,9 @@
                             <h5 class="current">Next Bid Price</h5>
                             <div style="display: flex; align-items: flex-start; justify-content: end;">
                                 <h3 class="price"
-                                id="change">₹{{ player.0.current_price }}                                
-                            </h3>
-                            <h8 class="price"
+                                    id="change">₹{{ player.0.current_price }}
+                                </h3>
+                                <h8 class="price"
                                     id="human">{{ player.0.current_price }}</h8>
                             </div>
                             {% if user %}
@@ -87,11 +89,12 @@
                                 name="value"
                                 id="bidding_price"
                                 value="{{ player.0.current_price }}">
-                            <button type="submit"
+                            <!-- <button type="submit"
                                 class="custom-button"
-                                id="bid">Submit a bid</button>
-                        </div>
-                    </form>
+                                id="bid">Submit a bid</button> -->
+                            </div>
+                        </form>
+                        <button class="custom-button" id="next">Next</button>
                 </div>
             </div>
         </div>
@@ -123,8 +126,8 @@
     let ajax_lagao = () => {
         let curr_price = document.getElementById('change').innerText;
         curr_price = parseInt(curr_price.slice(1));
-        console.log(curr_price,parseInt($('#bidding_price').val()));
-        if(parseInt(curr_price) !== parseInt($('#bidding_price').val())) {
+        console.log(curr_price, parseInt($('#bidding_price').val()));
+        if (parseInt(curr_price) !== parseInt($('#bidding_price').val())) {
             return
         }
         $.ajax({
@@ -178,16 +181,31 @@
     }
     let uri
     uri = window.location.host;
-    uri = "wss://" + uri + "/ws/player/{{ player.0.id }}"
+    uri = "ws://" + uri + "/ws/player/{{ player.0.id }}"
     let connection2 = new WebSocket(uri)
     window.onload = () => {
     }
     connection2.onclose = () => {
         window.location.reload()
     }
+    let time = 0
     connection2.onmessage = (data) => {
-        console.log((new Date()).getSeconds(), (new Date()).getMilliseconds())
         data = JSON.parse(data.data)
+        console.log("Player based", data)
+        if (data.timer !== undefined) {
+            time = data.timer
+            let timers = setInterval(() => {
+                time--;
+                if (time < 0) {
+                    document.getElementById('timer').innerHTML = "Time Over"
+                    clearInterval(timer);
+                    return;
+                }
+                document.getElementById('timer').innerHTML = time;
+            }, 1000);
+            return
+        }
+        console.log((new Date()).getSeconds(), (new Date()).getMilliseconds())
         if (bidding === true) {
             let curr_price = parseInt(data['curr_price']);
             Swal.fire({
@@ -214,13 +232,13 @@
         document.getElementById('name').innerText = data['user']
     }
     function humanize(num) {
-        if(num > 1000000){
-            return (num/1000000).toFixed(2) + 'M'
+        if (num > 1000000) {
+            return (num / 1000000).toFixed(2) + 'M'
         }
-        else if(num > 1000){
-            return (num/1000).toFixed(2) + 'K'
+        else if (num > 1000) {
+            return (num / 1000).toFixed(2) + 'K'
         }
-        else{
+        else {
             return num
         }
     }
@@ -233,6 +251,13 @@
         } catch (err) {
 
         }
+        document.getElementById('next').addEventListener('click', (event) => {
+            uris = window.location.href.split('/')
+            uris[4] = String(parseInt(uris[4]) + 1)
+            console.log(uris)
+            uris.pop()
+            window.location.href = uris.join('/')
+        })
     }
 </script>
 {% endblock %}
